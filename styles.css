@@ -378,13 +378,13 @@ a {
   z-index: 1;
   background:
     linear-gradient(to bottom, rgba(247, 244, 239, 0.12), rgba(247, 244, 239, 0.12) 68%, var(--surface-soft) 100%),
-    linear-gradient(90deg, rgba(247, 244, 239, 0.92), rgba(247, 244, 239, 0.62) 45%, rgba(247, 244, 239, 0.28));
+    linear-gradient(90deg, rgba(247, 244, 239, 0.75), rgba(247, 244, 239, 0.45) 45%, rgba(247, 244, 239, 0.16));
 }
 
 body.dark .hero::after {
   background:
     linear-gradient(to bottom, rgba(15, 15, 22, 0.18), rgba(15, 15, 22, 0.18) 68%, var(--surface-soft) 100%),
-    linear-gradient(90deg, rgba(15, 15, 22, 0.92), rgba(15, 15, 22, 0.68) 45%, rgba(15, 15, 22, 0.34));
+    linear-gradient(90deg, rgba(15, 15, 22, 0.75), rgba(15, 15, 22, 0.50) 45%, rgba(15, 15, 22, 0.20));
 }
 
 .hero-content {
@@ -898,9 +898,40 @@ body.dark .hero.about-banner::after {
   color: var(--muted);
 }
 
-/* 贊助頁：三個贊助等級卡片，置中排列並把按鈕對齊卡片底部。 */
-.sponsor-grid {
-  margin-top: clamp(24px, 4vw, 40px);
+/* 贊助頁：改寫自夜間模式範本（reference/sponsor.html），
+   改用全站主題變數驅動，淺色／深色都自動套用；移除原範本的月亮裝飾。 */
+
+/* 深色模式時，仿範本在區塊背景灑上幾顆星，呼應「趕稿的夜晚」。 */
+body.dark .sponsor-section {
+  background-image:
+    radial-gradient(1px 1px at 18% 22%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 72% 16%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 86% 54%, rgba(207, 198, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 38% 70%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 56% 40%, rgba(207, 198, 255, 0.4), transparent);
+}
+
+.sponsor-hero {
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.sponsor-hero .section-copy {
+  margin: 0 auto;
+}
+
+/* 標題使用範本的圓潤字體，增添手感。 */
+#sponsor-title {
+  font-family: "Zen Maru Gothic", "Noto Sans TC", sans-serif;
+}
+
+/* 卡片網格：自動排列、等高。 */
+.sponsor-tiers {
+  margin-top: clamp(28px, 5vw, 48px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
   align-items: stretch;
 }
 
@@ -908,67 +939,24 @@ body.dark .hero.about-banner::after {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-  overflow: hidden;
-  isolation: isolate;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-/* 每張卡片頂部一條依等級配色的漸層飾條。 */
-.sponsor-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 4px;
-  background: linear-gradient(90deg, var(--tier-from), var(--tier-to));
-}
-
-/* 卡片背後淡淡的等級色暈染，hover 時更明顯。 */
-.sponsor-card::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background: radial-gradient(120% 80% at 50% 0%, var(--tier-glow), transparent 70%);
-  opacity: 0.5;
-  transition: opacity 0.25s ease;
+  padding: 32px 28px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .sponsor-card:hover {
   transform: translateY(-6px);
+  border-color: var(--accent);
   box-shadow: var(--shadow);
-  border-color: color-mix(in srgb, var(--tier-to) 55%, var(--line));
 }
 
-.sponsor-card:hover::after {
-  opacity: 1;
-}
-
-/* 各等級的色彩主題（飾條與暈染）。 */
-.sponsor-card--bronze {
-  --tier-from: #c98a52;
-  --tier-to: #e6b27a;
-  --tier-glow: rgba(201, 138, 82, 0.16);
-}
-
-.sponsor-card--silver {
-  --tier-from: #9aa3ad;
-  --tier-to: #cdd5dd;
-  --tier-glow: rgba(154, 163, 173, 0.16);
-}
-
-.sponsor-card--gold {
-  --tier-from: #d6a73a;
-  --tier-to: #f3d27a;
-  --tier-glow: rgba(214, 167, 58, 0.20);
-}
-
-/* 主推方案：稍微放大、加上主色外框與更強陰影。 */
+/* 主推卡片：加上主色外框與柔光，桌機略為放大。 */
 .sponsor-card--featured {
-  border-color: color-mix(in srgb, var(--tier-to) 60%, var(--line));
-  box-shadow: var(--shadow);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent),
+    0 18px 50px color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
 @media (min-width: 821px) {
@@ -981,84 +969,124 @@ body.dark .hero.about-banner::after {
   }
 }
 
-/* 「最受歡迎」徽章。 */
+/* 置中於卡片上緣的「最多人下手」膠囊徽章。 */
 .sponsor-badge {
   position: absolute;
-  top: 14px;
-  right: -34px;
-  transform: rotate(45deg);
-  width: 130px;
-  padding: 4px 0;
-  text-align: center;
-  font-size: 0.72rem;
-  font-weight: 800;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
   letter-spacing: 0.05em;
-  color: #1f2526;
-  background: linear-gradient(90deg, var(--tier-from), var(--tier-to));
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  white-space: nowrap;
+  color: #ffffff;
+  background: var(--accent);
 }
 
-.sponsor-card .sponsor-emoji {
-  font-size: 2.8rem;
+.sponsor-icon {
+  font-size: 2.1rem;
   line-height: 1;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
+  margin-bottom: 14px;
 }
 
 .sponsor-card h3 {
-  margin: 4px 0 0;
+  margin: 0 0 6px;
+  font-family: "Zen Maru Gothic", "Noto Sans TC", sans-serif;
+  font-size: 1.35rem;
 }
 
-.sponsor-card .sponsor-price {
-  margin: 0;
+.sponsor-price {
+  margin: 0 0 16px;
+  font-size: 0.9rem;
   color: var(--accent-strong);
-  font-size: 1.9rem;
-  font-weight: 800;
 }
 
-.sponsor-card .sponsor-unit {
-  font-size: 0.85rem;
-  font-weight: 600;
+.sponsor-price b {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.sponsor-blurb {
+  margin: 0 0 20px;
+  font-size: 0.92rem;
   color: var(--muted);
-  margin-left: 4px;
+  min-height: 44px;
 }
 
-/* 各等級的回饋清單。 */
+/* 回饋清單：以 ✦ 為項目符號，分隔線淡淡的。 */
 .sponsor-perks {
   list-style: none;
-  margin: 6px 0 14px;
+  margin: 0 0 28px;
   padding: 0;
-  display: grid;
-  gap: 8px;
-  width: 100%;
-  text-align: left;
+  flex-grow: 1;
 }
 
 .sponsor-perks li {
   position: relative;
-  padding-left: 26px;
-  color: var(--muted);
-  font-size: 0.95rem;
+  padding: 8px 0 8px 26px;
+  font-size: 0.9rem;
+  color: var(--text);
+  border-top: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+}
+
+.sponsor-perks li:first-child {
+  border-top: none;
 }
 
 .sponsor-perks li::before {
-  content: "✓";
+  content: "✦";
   position: absolute;
-  left: 0;
-  top: -1px;
-  display: grid;
-  place-items: center;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  font-size: 0.7rem;
-  font-weight: 800;
-  color: var(--accent-strong);
-  background: var(--accent-soft);
+  left: 4px;
+  top: 8px;
+  font-size: 0.78rem;
+  color: var(--gold);
 }
 
-.sponsor-card .button {
+/* 卡片底部行動按鈕，對齊卡片底緣。 */
+.sponsor-btn {
   margin-top: auto;
-  width: 100%;
+  display: block;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.sponsor-btn:hover {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+}
+
+.sponsor-btn--primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.sponsor-btn--primary:hover {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--bg);
+}
+
+/* 頁尾說明小字。 */
+.sponsor-footnote {
+  margin: clamp(32px, 6vw, 56px) auto 0;
+  max-width: 620px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
 }
 
 /* 頁面底部的聲波動畫帶，作為贊助頁的收尾裝飾。 */

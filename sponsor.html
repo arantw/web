@@ -9,6 +9,12 @@
       }
     </script>
     <title>贊助</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="startAnimation.css" />
   </head>
@@ -52,55 +58,62 @@
     </header>
 
     <main>
-      <section class="section" aria-labelledby="sponsor-title">
-        <div class="reveal">
+      <section class="section sponsor-section" aria-labelledby="sponsor-title">
+        <div class="reveal sponsor-hero">
           <p class="section-label">Support</p>
-          <h1 id="sponsor-title">贊助</h1>
+          <h1 id="sponsor-title">養我 讓我繼續創作</h1>
           <p class="section-copy" data-typewriter>
-            如果你喜歡我的作品，歡迎以下列任一方案支持我繼續創作。選擇一個適合你的贊助等級吧。
+            喜歡我的作品的話，挑一個喂法吧。你的每一塊，都讓我多撐過一個趕稿的夜晚。
           </p>
         </div>
 
-        <div class="skill-grid sponsor-grid reveal reveal-delay-1">
-          <article class="skill-card sponsor-card sponsor-card--bronze">
-            <span class="sponsor-emoji" aria-hidden="true">🥉</span>
-            <h3>銅級</h3>
-            <p class="sponsor-price">$100<span class="sponsor-unit">/ 次</span></p>
-            <p>表達一份心意的支持，感謝你的鼓勵與肯定。</p>
+        <div class="sponsor-tiers reveal reveal-delay-1">
+          <!-- 銅 -->
+          <article class="sponsor-card">
+            <span class="sponsor-icon" aria-hidden="true">🕯️</span>
+            <h3>續一口氣🫧</h3>
+            <p class="sponsor-price"><b>$100</b> / 次 · 微光等級</p>
+            <p class="sponsor-blurb">讓我今天免於脫水而亡。回饋：我會在心裡默念你的名字三次，附贈一句謝謝（真心的）。</p>
             <ul class="sponsor-perks">
-              <li>專屬感謝訊息</li>
-              <li>署名於支持者牆</li>
+              <li>一封我親手打的肉麻謝文</li>
+              <li>名字刻上「恩人牆」永久留念</li>
             </ul>
-            <a class="button secondary" href="#">選擇銅級</a>
+            <a class="sponsor-btn" href="https://www.paypal.com/paypalme/aranTW/100TWD">點亮我</a>
           </article>
 
-          <article class="skill-card sponsor-card sponsor-card--silver">
-            <span class="sponsor-emoji" aria-hidden="true">🥈</span>
-            <h3>銀級</h3>
-            <p class="sponsor-price">$300<span class="sponsor-unit">/ 次</span></p>
-            <p>更進一步的支持，幫助我投入更多時間在作品上。</p>
+          <!-- 銀（主推） -->
+          <article class="sponsor-card sponsor-card--featured">
+            <span class="sponsor-badge">最多人下手</span>
+            <span class="sponsor-icon" aria-hidden="true">✨</span>
+            <h3>讓我泡麵可以加蛋❤️</h3>
+            <p class="sponsor-price"><b>$1000</b> / 次 · 月光等級</p>
+            <p class="sponsor-blurb">我今晚不必啃泡麵的調味包配白飯</p>
             <ul class="sponsor-perks">
-              <li>包含銅級所有回饋</li>
-              <li>作品高解析下載</li>
-              <li>幕後創作花絮</li>
+              <li>微光等級全部回饋</li>
+              <li>解鎖我的私房廢片一支</li>
+              <li>外加一張「我吃飽了」的證明照。</li>
             </ul>
-            <a class="button secondary" href="#">選擇銀級</a>
+            <a class="sponsor-btn sponsor-btn--primary" href="https://www.paypal.com/paypalme/aranTW/1000TWD">送我一點</a>
           </article>
 
-          <article class="skill-card sponsor-card sponsor-card--gold sponsor-card--featured">
-            <span class="sponsor-badge" aria-hidden="true">最受歡迎</span>
-            <span class="sponsor-emoji" aria-hidden="true">🥇</span>
-            <h3>金級</h3>
-            <p class="sponsor-price">$500<span class="sponsor-unit">/ 次</span></p>
-            <p>最高等級的支持，成為持續創作最重要的後盾。</p>
+          <!-- 金 -->
+          <article class="sponsor-card">
+            <span class="sponsor-icon" aria-hidden="true">🌌</span>
+            <h3>買下我的全部!</h3>
+            <p class="sponsor-price"><b>$10000</b> / 次 · 包養等級</p>
+            <p class="sponsor-blurb">恭喜成為我的衣食父母。</p>
             <ul class="sponsor-perks">
-              <li>包含銀級所有回饋</li>
-              <li>優先委託與許願</li>
-              <li>專屬客製化作品</li>
+              <li>月光等級全部回饋</li>
+              <li>隨叫隨到的語音哭窮</li>
+              <li>以及我對你無限的忠誠（合約期內）。</li>
             </ul>
-            <a class="button primary" href="#">選擇金級</a>
+            <a class="sponsor-btn" href="https://www.paypal.com/paypalme/aranTW/10000TWD">收編我</a>
           </article>
         </div>
+
+        <p class="sponsor-footnote reveal reveal-delay-2">
+          ＊ 這頁是作業展示，不要真的贊助我欸，如果真的想要可以到關於我+我dc或ig >3
+        </p>
       </section>
 
       <div class="sponsor-wave" aria-hidden="true">
