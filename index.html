@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      if (sessionStorage.getItem("page-arrival-transition") === "true") {
+        document.documentElement.classList.add("page-arrival-transition");
+      }
+    </script>
+    <title>About Me</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="startAnimation.css" />
+  </head>
+  <body>
+    <div class="start-animation" aria-hidden="true">
+      <div class="container">
+        <div class="curtain">
+          <div class="curtain__left"></div>
+          <div class="curtain__right"></div>
+        </div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="brand-group">
+        <a class="brand" href="#home" aria-label="回到首頁">About Me</a>
+        <span class="brand-sep" aria-hidden="true">|</span>
+        <a class="brand-logo" href="https://www.fju.edu.tw/" target="_blank" rel="noreferrer" aria-label="輔仁大學官網">
+          <img src="img/logo.png" alt="輔仁大學" />
+        </a>
+      </div>
+      <nav class="nav" aria-label="主要導覽">
+        <a href="#home">首頁</a>
+        <div class="nav-dropdown">
+          <a class="nav-dropdown-trigger" href="works.html">選單</a>
+          <div class="nav-menu" aria-label="作品選單">
+            <a href="works.html">作品集</a>
+            <div class="nav-subdropdown">
+              <a class="nav-submenu-trigger" href="about.html">關於我</a>
+              <div class="nav-submenu" aria-label="關於我選項">
+                <a href="sponsor.html">贊助</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="#contact">聯絡</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="切換深色模式">
+        <span class="theme-icon"><img src="assets/moon.svg" alt="" /></span>
+      </button>
+    </header>
+
+    <main id="home">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-photo-slider" aria-hidden="true">
+          <div class="hero-photo hero-photo-1"></div>
+          <div class="hero-photo hero-photo-2"></div>
+          <div class="hero-photo hero-photo-3"></div>
+        </div>
+        <div class="hero-content reveal">
+          <p class="eyebrow">Hello, I'm</p>
+          <h1 id="hero-title">宋嘉竑</h1>
+          <p class="hero-subtitle" data-typewriter>
+            在滿天繁星下拉開了夜幕，對於這無聊的世界，今天還能保持熱愛嗎?
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="works.html">查看作品</a>
+            <a class="button secondary" href="#contact">聯絡我</a>
+          </div>
+        </div>
+
+        <aside class="quick-card reveal reveal-delay-1" aria-label="個人摘要">
+          <span class="status-dot"></span>
+          <p>目前就讀輔仁大學 軟體工程</p>
+          <dl>
+            <div>
+              <dt>學號</dt>
+              <dd>513170380</dd>
+            </div>
+            <div>
+              <dt>熟悉語言</dt>
+              <dd>JAVA/C/html/js/css</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+
+      <section class="countdown-section">
+        <canvas id="countdownWave" class="section-wave" aria-hidden="true"></canvas>
+        <div class="container reveal">
+          <p class="section-label" style="color:var(--gold)">Countdown</p>
+          <h2 class="section-title">期末截止倒數</h2>
+          <p class="section-sub">距離 2026/08/08 截止日還有</p>
+          <div class="countdown-grid">
+            <div class="countdown-unit">
+              <div class="countdown-number" id="cd-days">000</div>
+              <div class="section-sub">天</div>
+            </div>
+            <div class="countdown-unit">
+              <div class="countdown-number" id="cd-hours">00</div>
+              <div class="section-sub">小時</div>
+            </div>
+            <div class="countdown-unit">
+              <div class="countdown-number" id="cd-mins">00</div>
+              <div class="section-sub">分鐘</div>
+            </div>
+            <div class="countdown-unit">
+              <div class="countdown-number" id="cd-secs">00</div>
+              <div class="section-sub">秒</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section contact-section reveal" aria-labelledby="contact-title">
+        <p class="section-label">Contact</p>
+        <h2 id="contact-title">歡迎和我聊聊</h2>
+        <p>如果你想認識我、合作，或只是想交換想法，可以透過下面的方式找到我。</p>
+        <div class="contact-links">
+          <a href="mailto:513170380@cloud.fju.edu.tw">513170380@cloud.fju.edu.tw</a>
+          <a href="https://github.com/arantw" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn</a>
+        </div>
+      </section>
+    </main>
+
+    <button class="top-button" type="button" aria-label="回到頁面頂端">↑</button>
+
+    <script src="script.js"></script>
+  </body>
+</html>

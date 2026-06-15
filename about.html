@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      if (sessionStorage.getItem("page-arrival-transition") === "true") {
+        document.documentElement.classList.add("page-arrival-transition");
+      }
+    </script>
+    <title>關於我</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="startAnimation.css" />
+  </head>
+  <body>
+    <div class="start-animation" aria-hidden="true">
+      <div class="container">
+        <div class="curtain">
+          <div class="curtain__left"></div>
+          <div class="curtain__right"></div>
+        </div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="brand-group">
+        <a class="brand" href="index.html">About Me</a>
+        <span class="brand-sep" aria-hidden="true">|</span>
+        <a class="brand-logo" href="https://www.fju.edu.tw/" target="_blank" rel="noreferrer" aria-label="輔仁大學官網">
+          <img src="img/logo.png" alt="輔仁大學" />
+        </a>
+      </div>
+      <nav class="nav" aria-label="主要導覽">
+        <a href="index.html#home">首頁</a>
+        <div class="nav-dropdown">
+          <a class="nav-dropdown-trigger" href="works.html">選單</a>
+          <div class="nav-menu" aria-label="作品選單">
+            <a href="works.html">作品集</a>
+            <div class="nav-subdropdown">
+              <a class="nav-submenu-trigger active" href="about.html">關於我</a>
+              <div class="nav-submenu" aria-label="關於我選項">
+                <a href="sponsor.html">贊助</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="index.html#contact">聯絡</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="切換深色模式">
+        <span class="theme-icon"><img src="assets/moon.svg" alt="" /></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero about-banner" aria-labelledby="about-title">
+        <div class="about-banner-bg" aria-hidden="true"></div>
+        <canvas id="aboutWave" class="section-wave" aria-hidden="true"></canvas>
+
+        <div class="about-stage">
+          <span class="about-avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <img src="./img/HKZGiNTbIAAKR65.jpg" alt="頭像" width="24" height="24">
+          </span>
+          <div class="about-welcome-box reveal" id="aboutWelcomeBox">
+            <div class="about-info-box" id="aboutInfoBox">
+            <p class="eyebrow">About</p>
+            <h1 id="about-title">關於我</h1>
+            <p class="about-motto" id="about-motto" data-typewriter>
+              為了讓七零八落的內心 、 恢復最初的模樣 ， 獨自踏上了尋找的旅程 。 
+            </p>
+            <dl class="about-tags">
+              <div>
+                <dt>Focus</dt>
+                <dd>軟體工程</dd>
+              </div>
+              <div>
+                <dt>Style</dt>
+                <dd>Clean UI</dd>
+              </div>
+            </dl>
+            <div class="hero-actions">
+              <a class="button primary" href="works.html">查看作品集</a>
+              <a class="button secondary" href="index.html#contact">聯絡我</a>
+            </div>
+            <ul style="list-style-type: none; padding-left: 0;" class="about-socials">
+              <li>
+                <a href="https://github.com/arantw" target="_blank" rel="noreferrer" class="social-icon" aria-label="GitHub">
+                  <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.youtube.com/@_ame_dayo" target="_blank" rel="noreferrer" class="social-icon" aria-label="YouTube">
+                  <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/_aran_1015/" target="_blank" rel="noreferrer" class="social-icon" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.332.014 7.052.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://discord.gg/cpyxj67v" target="_blank" rel="noreferrer" class="social-icon" aria-label="Discord">
+                  <svg viewBox="0 0 24 24"><path d="M20.317 4.369a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.211.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.249.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.369a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/song.jia.hong.45278/" target="_blank" rel="noreferrer" class="social-icon" aria-label="Facebook">
+                  <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="mailto:513170380@cloud.fju.edu.tw" class="social-icon" aria-label="Email">
+                  <svg viewBox="0 0 24 24"><path d="M1.5 4.5A1.5 1.5 0 0 1 3 3h18a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 21 21H3a1.5 1.5 0 0 1-1.5-1.5v-15zM4.6 5l7.4 6.4L19.4 5H4.6zM3 6.2v12.3h18V6.2l-8.5 7.36a1.5 1.5 0 0 1-1.94 0L3 6.2z"/></svg>
+                </a>
+              </li>
+            </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section split-section" aria-labelledby="story-title">
+        <div class="reveal">
+          <p class="section-label">Story</p>
+          <h2 id="story-title">我的介紹</h2>
+        </div>
+        <div class="section-copy reveal reveal-delay-1">
+          <p>
+            這裡可以放你的個人背景、學習歷程、興趣或未來目標。你可以把文字換成自己的內容，讓這頁成為正式的個人介紹頁。
+          </p>
+          <p>
+            我在製作網頁時會注意使用者是否能快速理解內容，也會透過互動與動畫讓瀏覽過程更順暢。
+          </p>
+        </div>
+      </section>
+
+      <section class="section map-section reveal" aria-labelledby="map-title">
+        <p class="section-label">Location</p>
+        <h2 id="map-title">輔仁大學</h2>
+        <div class="map-frame">
+          <iframe
+            title="輔仁大學地圖"
+            src="https://www.google.com/maps?q=%E8%BC%94%E4%BB%81%E5%A4%A7%E5%AD%B8&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div class="contact-links">
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=%E8%BC%94%E4%BB%81%E5%A4%A7%E5%AD%B8"
+            target="_blank"
+            rel="noreferrer"
+          >在 Google 地圖開啟輔仁大學</a>
+        </div>
+      </section>
+    </main>
+
+    <button class="top-button" type="button" aria-label="回到頁面頂端">↑</button>
+
+    <!-- 背景音樂：進入頁面後自動循環播放，右下角按鈕可開關。 -->
+    <audio id="bgm" src="bgm/BGM 夕暮れ、路地裏の白猫.mp3" loop preload="auto"></audio>
+    <button class="bgm-toggle" type="button" data-bgm-toggle aria-label="背景音樂開關" title="背景音樂">
+      <svg class="bgm-icon-on" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 18V5l12-2v13" />
+        <circle cx="6" cy="18" r="3" />
+        <circle cx="18" cy="16" r="3" />
+      </svg>
+      <svg class="bgm-icon-off" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 18V5l12-2v13" />
+        <circle cx="6" cy="18" r="3" />
+        <circle cx="18" cy="16" r="3" />
+        <line x1="3" y1="3" x2="21" y2="21" />
+      </svg>
+    </button>
+
+    <script src="script.js"></script>
+  </body>
+</html>

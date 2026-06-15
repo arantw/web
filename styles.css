@@ -1,0 +1,1666 @@
+/* 全站色彩變數：light mode 預設配色、主色、線條與自訂 scrollbar。 */
+:root {
+  color-scheme: light;
+  --bg: #f7f4ef;
+  --surface: #ffffff;
+  --surface-soft: #eee7dd;
+  --text: #1f2526;
+  --muted: #697174;
+  --line: #d8d0c4;
+  --accent: #5aa6bb;
+  --accent-strong: #6c9aab;
+  --accent-soft: #e6f0f4;
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: #b6c9cf;
+  --scrollbar-thumb-hover: #c2e0ea;
+  --shadow: 0 22px 60px rgba(22, 35, 33, 0.12);
+  --wave-color1: rgba(247, 244, 239, 0.55);
+  --wave-color2: rgba(247, 244, 239, 0.92);
+  --info-box-bg-start: rgba(255, 255, 255, 0.35);
+  --info-box-bg-end: rgba(255, 255, 255, 0.75);
+  --img-brightness: brightness(100%);
+  --gold: #4f93a8;
+}
+
+/* Dark mode 對應色彩，透過 body.dark 讓整個網站切換配色（移植自 ba-banner 的深色紫羅蘭配色）。 */
+body.dark {
+  color-scheme: dark;
+  --bg: #0f0f16;
+  --surface: #1f1f2c;
+  --surface-soft: #1a1a26;
+  --text: #dcdce2;
+  --muted: #c8c8dc;
+  --line: #2c2c39;
+  --accent: #9d7cd8;
+  --accent-strong: #cfc6ff;
+  --accent-soft: #2a2440;
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: #2c2c39;
+  --scrollbar-thumb-hover: #9d7cd8;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --wave-color1: rgba(15, 15, 22, 0.55);
+  --wave-color2: rgba(15, 15, 22, 0.92);
+  --info-box-bg-start: rgba(32, 27, 38, 0.6);
+  --info-box-bg-end: rgba(32, 29, 42, 0.9);
+  --img-brightness: brightness(80%);
+  --gold: #c8bdf2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* 頁面平滑捲動與 Firefox scrollbar 樣式。 */
+html {
+  scroll-behavior: smooth;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+}
+
+/* Chrome / Edge / Safari scrollbar 樣式，移除原本預設粗滑條。 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: var(--scrollbar-thumb);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+  line-height: 1.7;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 固定在頂部的導覽列，搭配半透明背景與模糊效果。 */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px clamp(20px, 6vw, 72px);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+/* 左上角品牌區：站名「About Me」與輔大 logo 以「|」分隔。 */
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.brand-sep {
+  color: var(--line);
+  font-weight: 400;
+  user-select: none;
+}
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  transition: opacity 0.2s ease;
+}
+
+.brand-logo img {
+  display: block;
+  width: auto;
+  height: 28px;
+}
+
+.brand-logo:hover {
+  opacity: 0.75;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 3vw, 32px);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.nav a,
+.nav-dropdown-trigger {
+  transition: color 0.2s ease;
+}
+
+.nav a:hover,
+.nav a.active,
+.nav-dropdown:hover .nav-dropdown-trigger,
+.nav-dropdown:focus-within .nav-dropdown-trigger {
+  color: var(--accent-strong);
+}
+
+/* 導覽列「作品」下拉選單，hover 或鍵盤 focus 時顯示。 */
+.nav-dropdown {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-dropdown-trigger::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 7px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  vertical-align: middle;
+}
+
+.nav-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  min-width: 150px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.nav-menu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 12px;
+}
+
+.nav-menu a {
+  display: block;
+  padding: 9px 12px;
+  border-radius: 6px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.nav-dropdown:hover .nav-menu,
+.nav-dropdown:focus-within .nav-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+/* 第二層子選單：「贊助」展開後從右側飛出三個贊助等級選項。 */
+.nav-subdropdown {
+  position: relative;
+}
+
+.nav-submenu-trigger {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.nav-submenu-trigger::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 5px solid currentColor;
+}
+
+.nav-submenu {
+  position: absolute;
+  top: -9px;
+  left: calc(100% + 9px);
+  min-width: 170px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* 透明橋接區，讓滑鼠從父項移到子選單時不會中斷 hover。 */
+.nav-submenu::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 100%;
+  width: 12px;
+  height: 100%;
+}
+
+.nav-subdropdown:hover .nav-submenu,
+.nav-subdropdown:focus-within .nav-submenu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* 主題切換與回到頂端按鈕共用圓形按鈕樣式。 */
+.theme-toggle,
+.top-button {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle:hover,
+.top-button:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.theme-icon img {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* 首頁 hero 區塊：第一屏自我介紹與摘要卡片的主要版面。 */
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100vh - 79px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+  align-items: center;
+  gap: clamp(28px, 6vw, 84px);
+  padding: clamp(64px, 8vw, 112px) clamp(20px, 6vw, 72px);
+  overflow: hidden;
+}
+
+/* 首頁 hero 背景：用輪替照片取代純色背景，照片鋪滿首頁第一屏。 */
+.hero-photo-slider {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  width: 300%;
+  height: 100%;
+  min-height: 100%;
+  background: #000000;
+  animation: heroPhotoSlide 15s ease-in-out infinite;
+}
+
+.hero-photo {
+  flex: 0 0 33.333333%;
+  width: 33.333333%;
+  height: 100%;
+  min-height: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.hero-photo-1 {
+  background-image: url("https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1600&q=80");
+}
+
+.hero-photo-2 {
+  background-image: url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1600&q=80");
+}
+
+.hero-photo-3 {
+  background-image: url("https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1600&q=80");
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(247, 244, 239, 0.12), rgba(247, 244, 239, 0.12) 68%, var(--surface-soft) 100%),
+    linear-gradient(90deg, rgba(247, 244, 239, 0.92), rgba(247, 244, 239, 0.62) 45%, rgba(247, 244, 239, 0.28));
+}
+
+body.dark .hero::after {
+  background:
+    linear-gradient(to bottom, rgba(15, 15, 22, 0.18), rgba(15, 15, 22, 0.18) 68%, var(--surface-soft) 100%),
+    linear-gradient(90deg, rgba(15, 15, 22, 0.92), rgba(15, 15, 22, 0.68) 45%, rgba(15, 15, 22, 0.34));
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 760px;
+}
+
+.hero .quick-card {
+  position: relative;
+  z-index: 3;
+}
+
+.eyebrow,
+.section-label {
+  margin: 0 0 10px;
+  color: var(--accent-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 22px;
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+/* 打字機效果文字：逐字輸出的文字一律加粗。 */
+[data-typewriter] {
+  font-weight: bold;
+}
+
+/* 標題打字機效果：搭配 JS 逐字輸出時顯示的閃爍游標。 */
+.typewriter-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 0.85em;
+  margin-left: 6px;
+  vertical-align: -0.1em;
+  background-color: currentColor;
+  animation: typewriterBlink 0.9s step-end infinite;
+}
+
+@keyframes typewriterBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes heroPhotoSlide {
+  0%,
+  28% {
+    transform: translateX(0);
+  }
+
+  34%,
+  62% {
+    transform: translateX(-33.333333%);
+  }
+
+  68%,
+  94% {
+    transform: translateX(-66.666667%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.countdown-section {
+  position: relative;
+  background: var(--surface-soft);
+  color: var(--text);
+  text-align: center;
+  padding: 6rem 2rem 5rem;
+}
+
+/* 讓 hero 名字照片區往下銜接到 countdown-section 時有柔和過渡。 */
+.countdown-section::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: clamp(58px, 9vw, 120px);
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--surface-soft));
+}
+
+.countdown-section .section-title { color: var(--text); }
+.countdown-section .section-sub { color: var(--muted); }
+
+.countdown-grid {
+  display: flex; justify-content: center; gap: 1.5rem;
+  flex-wrap: wrap; margin: 2rem 0;
+}
+
+.countdown-unit {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px; padding: 1.5rem 2rem;
+  min-width: 110px;
+}
+.countdown-number {
+  font-size: 3rem; font-weight: 800;
+  color: var(--gold); line-height: 1; font-variant-numeric: tabular-nums;
+}
+.countdown-label { font-size: 0.8rem; color: rgba(0, 0, 0, 0.5); margin-top: 0.4rem; letter-spacing: 0.08em; }
+
+.countdown-deadline {
+  font-size: 0.875rem; color: rgba(0, 0, 0, 0.4);
+  margin-top: 1.5rem;
+}
+
+h2 {
+  margin-bottom: 18px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+h3 {
+  margin-bottom: 10px;
+  font-size: 1.15rem;
+}
+
+.hero-subtitle {
+  max-width: 620px;
+  color: var(--muted);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+}
+
+.hero-actions,
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.button,
+.contact-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-weight: 700;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.button:hover,
+.contact-links a:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.button.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.button.secondary,
+.contact-links a {
+  background: var(--surface);
+}
+
+.quick-card,
+.skill-card,
+.contact-section {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.quick-card {
+  position: relative;
+  padding: 28px;
+}
+
+.status-dot {
+  display: block;
+  width: 12px;
+  height: 12px;
+  margin-bottom: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 8px var(--accent-soft);
+}
+
+.quick-card p {
+  color: var(--muted);
+}
+
+.quick-card dl {
+  display: grid;
+  gap: 16px;
+  margin: 28px 0 0;
+}
+
+.quick-card div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.quick-card dt {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.quick-card dd {
+  margin: 0;
+  font-weight: 800;
+}
+
+/* ── 關於我頁面：橫幅卡片風格 Hero（視覺參考 reference/ba-banner.html）──── */
+
+/* 橫幅版面：背景圖＋聲波動畫，並把歡迎卡片置中顯示。 */
+.about-banner {
+  grid-template-columns: 1fr;
+  place-items: center;
+  text-align: center;
+  perspective: 1000px;
+}
+
+/* 橫幅背景圖，依主題調整亮度。 */
+.about-banner-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url("./img/121764304_p0.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: var(--img-brightness);
+  transition: filter 0.5s ease;
+}
+
+/* 蓋在背景圖上的漸層遮罩，往下融入頁面背景色。 */
+.hero.about-banner::after {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18) 55%, var(--bg) 100%);
+}
+
+body.dark .hero.about-banner::after {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35) 55%, var(--bg) 100%);
+}
+
+/* 區塊底部的聲波動畫畫布，疊在漸層遮罩之上，作為與下一個區塊的過渡。 */
+.section-wave {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* 歡迎卡片容器，會隨滑鼠位置產生視差傾斜。 */
+/*讓頭像可以獨立疊在卡片上方、不隨卡片移動。 */
+.about-stage {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.about-welcome-box {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+/* 玻璃擬態資訊卡片：頭像、標題、座右銘、標籤與社群連結。 */
+.about-info-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: min(92vw, 560px);
+  padding: 64px 36px 36px;
+  border-radius: 24px;
+  background: linear-gradient(160deg, var(--info-box-bg-start), var(--info-box-bg-end));
+  border: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(24px) saturate(120%);
+  -webkit-backdrop-filter: blur(24px) saturate(120%);
+  transition: background 0.2s ease;
+}
+
+/* 卡片上緣的圓形大頭貼圖示。獨立於卡片之上，不隨卡片視差傾斜移動。 */
+.about-avatar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  border: 3px solid var(--surface);
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.about-avatar svg {
+  width: 40px;
+  height: 40px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 有上傳真實頭像照片時，讓照片填滿整個圓形頭像，並隱藏預設的 SVG 圖示。 */
+.about-avatar img {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.about-avatar:has(img) svg {
+  display: none;
+}
+
+/* 滑鼠移入頭像時稍微放大。 */
+.about-avatar:hover {
+  transform: translate(-50%, -50%) scale(1.12);
+}
+
+/* 滑鼠移入頭像時旋轉一圈：起步快、收尾減速（ease-out）。
+   保留置中位移與放大，避免旋轉時跑位或縮放跳動。 */
+@keyframes avatar-spin {
+  from {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1.12) rotate(360deg);
+  }
+}
+
+.about-avatar.is-spinning {
+  animation: avatar-spin 0.7s cubic-bezier(0.12, 0.78, 0.18, 1);
+}
+
+.about-info-box .eyebrow {
+  margin: 8px 0 0;
+}
+
+.about-info-box h1 {
+  margin-bottom: 0;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+}
+
+/* 座右銘文字，搭配打字機游標。 */
+.about-motto {
+  max-width: 440px;
+  min-height: 3.2em;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+/* Focus / Style 標籤列。 */
+.about-tags {
+  display: flex;
+  gap: 28px;
+  margin: 4px 0 0;
+}
+
+.about-tags div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.about-tags dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.about-tags dd {
+  margin: 0;
+  font-weight: 800;
+}
+
+/* 社群連結圖示列。 */
+.about-socials {
+  display: flex;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+.about-socials .social-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--muted);
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.about-socials .social-icon:hover {
+  color: var(--accent-strong);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.about-socials .social-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* 一般內容區塊的共用間距與分隔線。 */
+.section {
+  padding: clamp(70px, 9vw, 118px) clamp(20px, 6vw, 72px);
+  border-top: 1px solid var(--line);
+}
+
+/* 關於我區塊：標題與文字說明左右分欄。 */
+.split-section {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.65fr) minmax(0, 1.35fr);
+  gap: clamp(30px, 7vw, 90px);
+}
+
+.section-copy {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+.section-heading {
+  max-width: 760px;
+  margin-bottom: 34px;
+}
+
+/* 技能卡片區塊：桌機三欄、窄螢幕改單欄。 */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.skill-card {
+  min-height: 230px;
+  padding: 26px;
+  box-shadow: none;
+}
+
+.skill-card p,
+.timeline-item p,
+.contact-section p {
+  color: var(--muted);
+}
+
+/* 贊助頁：三個贊助等級卡片，置中排列並把按鈕對齊卡片底部。 */
+.sponsor-grid {
+  margin-top: clamp(24px, 4vw, 40px);
+}
+
+.sponsor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.sponsor-card .sponsor-emoji {
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.sponsor-card h3 {
+  margin: 4px 0 0;
+}
+
+.sponsor-card .sponsor-price {
+  margin: 0;
+  color: var(--accent-strong);
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.sponsor-card .button {
+  margin-top: auto;
+}
+
+/* 首頁精選作品時間線。 */
+.timeline {
+  display: grid;
+  gap: 14px;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 20px;
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+}
+
+.timeline-item span {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 800;
+}
+
+.contact-section {
+  margin: clamp(34px, 6vw, 72px);
+  padding: clamp(34px, 6vw, 70px);
+  border-top: 1px solid var(--line);
+}
+
+/* 關於我頁地圖區塊：嵌入輔仁大學位置，採用 16:9 響應式比例。 */
+.map-section p {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+.map-frame {
+  margin: 28px 0 8px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.map-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* 作品表格頁舊版樣式，保留給需要表格呈現時使用。 */
+.table-section {
+  min-height: calc(100vh - 79px);
+}
+
+.table-intro {
+  max-width: 680px;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.work-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.work-table th,
+.work-table td {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.work-table th {
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: 0.88rem;
+  text-transform: uppercase;
+}
+
+.work-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.work-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.work-table tbody tr:hover {
+  background: var(--accent-soft);
+}
+
+.table-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.table-actions {
+  margin-top: 28px;
+}
+
+/* 作品集頁：隱藏原生 scrollbar，改用右側年份刻度作為瀏覽提示。 */
+.works-root {
+  scrollbar-width: none;
+}
+
+.works-root::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.works-page {
+  padding-right: 104px;
+}
+
+.portfolio-main {
+  overflow: clip;
+}
+
+/* 作品集頁首屏，讓標題區符合視窗高度。 */
+.portfolio-hero {
+  min-height: calc(100svh - 79px);
+  display: grid;
+  align-items: end;
+}
+
+/* 右側年份刻度尺：點擊年份可跳到對應作品區塊。 */
+.year-timeline {
+  position: fixed;
+  top: 50%;
+  right: 24px;
+  z-index: 9;
+  display: grid;
+  gap: 18px;
+  padding: 18px 0;
+  background: transparent;
+  transform: translateY(-50%);
+}
+
+.year-timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 11px;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, transparent, var(--line) 12%, var(--line) 88%, transparent);
+}
+
+/* --tick：由 JS 依捲動位置設定的接近程度（0～1），驅動刻度連續變化。 */
+.year-timeline a {
+  --tick: 0;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 80px;
+  height: 24px;
+  /* 標籤右側留白需大於最長刻度（約 35px），避免刻度長出時壓到文字。 */
+  padding-right: 40px;
+  /* 字色由灰到主題色隨刻度漸變。 */
+  color: color-mix(in srgb, var(--accent-strong) calc(var(--tick) * 100%), var(--muted));
+  font-size: 0.78rem;
+  font-weight: 800;
+  /* 越接近中央越往左突出。 */
+  transform: translateX(calc(var(--tick) * -6px));
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.year-timeline a::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  /* 刻度長度隨接近程度由 14px 延伸到 30px。 */
+  width: calc(14px + var(--tick) * 16px);
+  height: 2px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) calc(var(--tick) * 100%), var(--line));
+  transform: translateY(-50%);
+  transition: width 0.15s ease, background-color 0.15s ease;
+}
+
+.year-timeline a::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) calc(var(--tick) * 100%), var(--bg));
+  border: 2px solid color-mix(in srgb, var(--accent) calc(var(--tick) * 100%), var(--line));
+  /* 圓點隨接近程度放大。 */
+  transform: translateY(-50%) scale(calc(0.85 + var(--tick) * 0.45));
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+
+/* 滑鼠移入或目前年份：直接拉到刻度最強狀態。 */
+.year-timeline a:hover,
+.year-timeline a.active {
+  color: var(--accent-strong);
+  transform: translateX(-6px);
+}
+
+.year-timeline a:hover::before,
+.year-timeline a.active::before {
+  width: 30px;
+  background: var(--accent);
+}
+
+.year-timeline a:hover::after,
+.year-timeline a.active::after {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-50%) scale(1.3);
+}
+
+/* 每個年份作品區塊符合視窗高度，透明度由 JS 依捲動位置控制。 */
+.year-section {
+  min-height: calc(100svh - 79px);
+  display: grid;
+  align-content: center;
+  scroll-margin-top: 96px;
+  opacity: var(--year-opacity, 0.2);
+  transform: translateY(calc((1 - var(--year-opacity, 0.2)) * 22px));
+  transition: opacity 0.12s linear, transform 0.12s linear;
+}
+
+.year-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 28px;
+}
+
+.year-heading h2 {
+  margin-bottom: 0;
+}
+
+/* 年份內的作品橫向瀏覽列，左右箭頭負責水平切換作品。 */
+.portfolio-row {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) 46px;
+  align-items: center;
+  gap: 14px;
+  max-width: min(100%, calc(100vw - 212px));
+}
+
+.portfolio-track {
+  display: grid;
+  grid-auto-columns: minmax(500px, calc((100% - 36px) / 3));
+  grid-auto-flow: column;
+  gap: 18px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  padding: 4px 4px 18px;
+  scroll-behavior: smooth;
+  scroll-snap-type: inline mandatory;
+  scrollbar-width: none;
+}
+
+.portfolio-track::-webkit-scrollbar {
+  display: none;
+}
+
+.portfolio-card {
+  position: relative;
+  min-height: clamp(240px, 34svh, 360px);
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  scroll-snap-align: start;
+}
+
+.portfolio-card span {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 46px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 800;
+}
+
+.portfolio-card p {
+  color: var(--muted);
+}
+
+/* 作品卡片內嵌的 Lottie 動畫（data.json），固定白色背景，稍微放大超出卡片內距。 */
+.portfolio-card .card-lottie {
+  display: block;
+  width: calc(100% + 36px);
+  aspect-ratio: 16 / 9;
+  margin: 10px -18px 18px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+/* 作品卡片內嵌的本機影片（AE 資料夾），沿用 card-lottie 的 16:9 方框版型。 */
+.portfolio-card .card-video {
+  display: block;
+  width: calc(100% + 36px);
+  aspect-ratio: 16 / 9;
+  margin: 10px -18px 18px;
+  background: #000000;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* SORT 卡片內的排序演算法動畫：氣泡排序長條圖，循環播放，配色沿用主題變數，
+   會自動適應 light / dark mode。視覺邏輯移植自 sort/ 資料夾的 React 版本。 */
+.sort-anim {
+  position: relative;
+  width: calc(100% + 36px);
+  aspect-ratio: 16 / 9;
+  margin: 10px -18px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.sort-anim__label {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  font-family: ui-monospace, "DM Mono", SFMono-Regular, monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  color: var(--muted);
+}
+
+.sort-anim__bars {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  top: 44px;
+}
+
+.sort-anim__bar {
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+  transform-origin: bottom center;
+  border-radius: 4px 4px 2px 2px;
+  background: color-mix(in srgb, var(--muted) 38%, var(--surface));
+  transition: left 110ms cubic-bezier(0.4, 0, 0.2, 1),
+    height 110ms ease,
+    background-color 70ms linear;
+}
+
+.sort-anim__bar.is-sorted {
+  background: var(--text);
+}
+
+.sort-anim__bar.is-comparing,
+.sort-anim__bar.is-swapping {
+  background: var(--accent);
+}
+
+/* 排序完成時，長條由左到右依序躍起並閃過 accent 色的波浪反饋 */
+@keyframes sort-finale {
+  0% {
+    transform: translateX(-50%) scaleY(1);
+  }
+  40% {
+    transform: translateX(-50%) scaleY(1.12);
+    background-color: var(--accent);
+  }
+  100% {
+    transform: translateX(-50%) scaleY(1);
+  }
+}
+
+.sort-anim__bar.is-finale {
+  animation: sort-finale 540ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sort-anim__bar {
+    transition: none;
+  }
+  .sort-anim__bar.is-finale {
+    animation: none;
+  }
+}
+
+/* 重新播放並洗牌按鈕：卡片右上角的圓形圖示按鈕 */
+.sort-anim__replay {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease,
+    color 0.2s ease, transform 0.2s ease;
+}
+
+.sort-anim__replay:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.sort-anim__replay:active svg {
+  transform: rotate(-90deg);
+  transition: transform 0.2s ease;
+}
+
+/* about 頁背景音樂開關：固定在左下角的圓形按鈕 */
+.bgm-toggle {
+  position: fixed;
+  left: 22px;
+  bottom: 22px;
+  z-index: 40;
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--accent-strong);
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  transition: border-color 0.2s ease, background-color 0.2s ease,
+    color 0.2s ease, transform 0.2s ease;
+}
+
+.bgm-toggle:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+}
+
+/* 預設顯示「播放中」圖示；暫停/靜音時改顯示帶斜線的圖示 */
+.bgm-toggle .bgm-icon-off {
+  display: none;
+}
+
+.bgm-toggle.is-muted {
+  color: var(--muted);
+}
+
+.bgm-toggle.is-muted .bgm-icon-on {
+  display: none;
+}
+
+.bgm-toggle.is-muted .bgm-icon-off {
+  display: block;
+}
+
+.carousel-button {
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 1.8rem;
+  line-height: 1;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.carousel-button:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+}
+
+/* 回到頂端按鈕預設隱藏，捲動到一定高度後由 JS 加上 visible。 */
+.top-button {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.top-button.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Scroll Animation：進入視窗後由 JS 加上 is-visible，產生淡入上滑。 */
+.reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 {
+  transition-delay: 0.12s;
+}
+
+.reveal-delay-2 {
+  transition-delay: 0.24s;
+}
+
+/* 尊重使用者的減少動態偏好，關閉大部分動畫與平滑捲動。 */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 平板以下版面：導覽列換行，作品刻度移到底部。 */
+@media (max-width: 820px) {
+  .site-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 2px;
+  }
+
+  .nav-dropdown {
+    position: static;
+  }
+
+  .nav-menu {
+    left: auto;
+    right: 18px;
+    transform: translateY(8px);
+  }
+
+  .nav-dropdown:hover .nav-menu,
+  .nav-dropdown:focus-within .nav-menu {
+    transform: translateY(0);
+  }
+
+  /* 小螢幕：第二層子選單改為內嵌縮排呈現，避免飛出畫面外。 */
+  .nav-submenu {
+    position: static;
+    margin: 4px 0 4px 12px;
+    min-width: 0;
+    padding: 4px;
+    box-shadow: none;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  .nav-submenu::before {
+    display: none;
+  }
+
+  .hero,
+  .split-section,
+  .skill-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .about-banner {
+    min-height: 70vh;
+  }
+
+  .skill-card {
+    min-height: auto;
+  }
+
+  .works-page {
+    padding-right: 0;
+  }
+
+  .year-timeline {
+    top: auto;
+    right: 14px;
+    bottom: 14px;
+    left: 14px;
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(16px);
+    transform: none;
+  }
+
+  .year-timeline::before {
+    left: 26px;
+    right: 26px;
+    top: 50%;
+    bottom: auto;
+    width: auto;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+
+  .year-timeline a {
+    width: 42px;
+    height: 30px;
+    justify-content: center;
+    padding-right: 0;
+    font-size: 0.72rem;
+  }
+
+  .year-timeline a::before,
+  .year-timeline a::after {
+    display: none;
+  }
+
+  .year-timeline a:hover,
+  .year-timeline a.active {
+    transform: translateY(-3px);
+    color: var(--accent-strong);
+  }
+
+  .portfolio-row {
+    grid-template-columns: 40px minmax(0, 1fr) 40px;
+    gap: 8px;
+    max-width: 100%;
+  }
+
+  .carousel-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .portfolio-track {
+    grid-auto-columns: minmax(245px, 82%);
+  }
+
+  .year-section {
+    min-height: calc(100svh - 120px);
+  }
+}
+
+/* 手機版面：縮小邊距、隱藏作品橫向箭頭，改用手勢水平滑動。 */
+@media (max-width: 520px) {
+  .site-header {
+    padding: 14px 18px;
+  }
+
+  .nav {
+    font-size: 0.88rem;
+  }
+
+  .hero,
+  .section {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .about-info-box {
+    width: 100%;
+    padding: 56px 22px 28px;
+  }
+
+  .about-tags {
+    gap: 18px;
+  }
+
+  .contact-section {
+    margin: 18px;
+  }
+
+  .timeline-item {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-row {
+    grid-template-columns: 1fr;
+  }
+
+  .carousel-button {
+    display: none;
+  }
+
+  .year-timeline a {
+    width: 38px;
+    font-size: 0.68rem;
+  }
+}
+/*遷入圓角設定*/
+iframe {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  
+  transform: translateZ(0);
+  isolation: isolate;
+}
+

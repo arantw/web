@@ -1,0 +1,312 @@
+/* ── 全站 CSS 變數設定（淺色主題，完整移植自 vars.less）──────── */
+:root {
+  --transition-time: 0.3s;
+  --transition-curve: cubic-bezier(0.4, 0, 0.2, 1);
+  --btn-hover: #33495d;
+  --btn-background: #425c8b;
+  --color-blue: #128afa;
+  --font-color-gold: #ffe401;
+  --font-color-grey: #4c5866;
+  --icon-color: #466398;
+  --blur-val: blur(15px);
+  --general-background-color: #eaeff5;
+  --foreground-color: white;
+  --blue-shadow-color: 40, 135, 200;
+  --wave-color1: rgba(234, 239, 245, 0.8);
+  --wave-color2: rgba(234, 239, 245, 0.5);
+  --pot-border-left: #c7e4f6;
+  --dot: rgba(0,0,0,0.2);
+  --dot-active: #128afa;
+  --infobox-background-initial: rgba(255,255,255,0.1);
+  --infobox-background-final: rgba(255,255,255,0.5);
+  --img-brightness: brightness(100%);
+  --welcome-text-color: var(--foreground-color);
+  --welcome-text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  --info-box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  --post-InnerBanner-color: white;
+  --infobox-border-color: white;
+  --downarrow-color: white;
+  --content-opacity: 0.25;
+}
+
+/* ── 深色主題（Dark Mode）變數覆蓋 ──────────────────────────── */
+html[theme='dark'] {
+  --btn-hover: #797995;
+  --btn-background: #5c5c76bf;
+  --color-blue: #705781;
+  --font-color-gold: #cfc6ff;
+  --font-color-grey: #c8c8dc;
+  --icon-color: #9d7cd8;
+  --blur-val: blur(8px);
+  --general-background-color: #0f0f16;
+  --foreground-color: #1f1f2c;
+  --blue-shadow-color: 147, 113, 207;
+  --wave-color1: rgba(30,30,50,0.604);
+  --wave-color2: rgba(21,21,28,0.384);
+  --pot-border-left: rgba(135,112,210,0.687);
+  --infobox-background-initial: rgba(32,27,38,0.6);
+  --infobox-background-final: rgba(32,29,42,0.9);
+  --img-brightness: brightness(80%);
+  --welcome-text-color: #dcdce2;
+  --welcome-text-shadow: 0 0 5px rgba(79,45,138,0.4);
+  --info-box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --infobox-border-color: #2c2c39b5;
+  --downarrow-color: rgba(255,255,255,0.597);
+  --content-opacity: 0.1;
+}
+
+/* ── 全域樣式重置 ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ul { list-style: none; }
+a { text-decoration: none; }
+
+body {
+  background-color: var(--general-background-color);
+  font-family: 'Blueaka', 'Noto Sans TC', sans-serif;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  transition: background-color 0.5s;
+  min-height: 100vh;
+}
+
+/* ── 開場動畫畫面 ──────────────────────────────────────────── */
+#splash-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(#b9e6f6, #ece5f4);
+  z-index: 999;
+  transition: opacity 0.5s;
+}
+
+html[theme='dark'] #splash-container {
+  background: linear-gradient(#c3bde9, #fee4ff);
+}
+
+#splash-container.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#splash-container svg {
+  width: min(80vw, 600px);
+  height: auto;
+}
+
+.triangle-group path { fill: white; fill-opacity: 0.15; }
+.circle-path { fill: #E0F0FA; fill-opacity: 0.9; }
+.led-path { fill: white; filter: url(#glow); }
+.glow-color { flood-color: white; }
+html[theme='dark'] .circle-path { fill: #fee4ff; }
+html[theme='dark'] .glow-color { flood-color: #efe0fd; }
+
+/* ── 橫幅主視覺區塊 ────────────────────────────────────────── */
+.banner {
+  transform: translateZ(0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 75vh;
+  mask: linear-gradient(to top, transparent, var(--general-background-color) 5%);
+  -webkit-mask: linear-gradient(to top, transparent, var(--general-background-color) 5%);
+  perspective: 1000px;
+  overflow: hidden;
+  -webkit-user-drag: none;
+  transition: height 0.3s;
+}
+
+.banner.loadingComplete {
+  animation: fade-blur-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes fade-blur-in {
+  from { filter: var(--blur-val); transform: scale(1.5); }
+  to   { filter: none; transform: scale(1); }
+}
+
+.bg-img {
+  background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80');
+  position: absolute;
+  top: 0; width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: var(--img-brightness);
+  transition: filter 0.5s;
+}
+
+canvas#wave {
+  position: absolute;
+  bottom: 0;
+  z-index: 50;
+}
+
+/* ── 歡迎文字與資訊卡片區塊 ────────────────────────────────── */
+.welcome-box {
+  margin-top: 4.2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: transform 0.2s, color 0.5s, text-shadow 0.5s;
+}
+
+.welcome-text {
+  font-size: 4.5vw;
+  font-weight: bold;
+  color: var(--welcome-text-color);
+  text-shadow: var(--welcome-text-shadow);
+  text-align: center;
+  margin-bottom: 5vw;
+  user-select: none;
+}
+
+/* 資訊卡片本體（玻璃擬態效果） */
+.info-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 6vh 2vw 3vh;
+  width: 40vw;
+  border-radius: 3vw;
+  box-shadow: var(--info-box-shadow);
+  backdrop-filter: var(--blur-val) saturate(120%);
+  -webkit-backdrop-filter: var(--blur-val) saturate(120%);
+}
+
+/* 大頭貼圖片 */
+.info-box .avatar {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 7.5vw; height: 7.5vw;
+  border-radius: 50%;
+  border: 3px solid var(--infobox-border-color);
+  transition: transform 0.6s ease, box-shadow 0.4s ease, filter 0.5s;
+  box-shadow: 0 0 2px rgba(0,0,0,0.6);
+  cursor: pointer;
+  user-select: none;
+  filter: var(--img-brightness);
+  object-fit: cover;
+}
+
+.info-box .avatar:hover {
+  transform: translate(-50%, -50%) rotate(1turn) scale(1.1);
+  box-shadow: 0 0 7px rgba(0,0,0,0.6);
+}
+
+/* 名稱與座右銘文字（含打字機游標） */
+.info-box .name {
+  font-size: 1.5vw;
+  margin-top: 3vh;
+  color: var(--font-color-grey);
+}
+
+.info-box .motto {
+  font-size: 1vw;
+  font-weight: bold;
+  color: var(--font-color-grey);
+  margin-top: 3vh;
+  text-align: center;
+  min-height: 1.5em;
+}
+
+.info-box .motto .pointer {
+  display: inline-block;
+  margin: -0.5vh 0 0;
+  padding: 0;
+  vertical-align: middle;
+  width: 2px;
+  height: 1vw;
+  background-color: var(--font-color-grey);
+  animation: blink 0.8s linear infinite;
+}
+
+@keyframes blink {
+  0%,  40% { opacity: 1; }
+  60%, 100% { opacity: 0; }
+}
+
+/* 社群圖示列表 */
+.info-box ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 3.5vh;
+  width: 12vw;
+  gap: 0.5vw;
+}
+
+.info-box .social-icon {
+  font-size: 1.5vw;
+  font-weight: 600;
+  color: var(--font-color-grey);
+  transition: all 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-box .social-icon:hover {
+  filter: drop-shadow(0 0 5px var(--font-color-grey));
+}
+
+.info-box .social-icon svg {
+  width: 1.5vw; height: 1.5vw;
+  fill: currentColor;
+}
+
+/* ── 主題切換按鈕樣式 ──────────────────────────────────────── */
+.theme-toggle {
+  position: fixed;
+  top: 16px; right: 16px;
+  z-index: 200;
+  background: var(--foreground-color);
+  border: 1px solid var(--pot-border-left);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--font-color-grey);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: all 0.3s;
+}
+
+/* ── 手機／小螢幕響應式設計 ────────────────────────────────── */
+@media (max-width: 768px) {
+  .welcome-text { font-size: 5vh; margin-bottom: 10vh; }
+
+  .info-box {
+    padding: 5vh 6vw 2vh;
+    width: 75vw;
+    border-radius: 4vh;
+  }
+
+  .info-box .avatar { width: 10vh; height: 10vh; }
+  .info-box .name { font-size: 2.5vh; margin-top: 1.8vh; }
+  .info-box .motto { font-size: 1.5vh; margin-top: 1.5vh; }
+  .info-box .motto .pointer { height: 1.5vh; }
+  .info-box ul { margin-top: 1.8vh; width: 32vw; }
+  .info-box .social-icon svg { width: 3vh; height: 3vh; }
+}
+
+/* ── 橫幅下方的內容佔位區塊 ────────────────────────────────── */
+.page-spacer { height: 75vh; }
+
+.page-content {
+  background: var(--general-background-color);
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--font-color-grey);
+  font-size: 0.9rem;
+}

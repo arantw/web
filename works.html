@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="works-root">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      if (sessionStorage.getItem("page-arrival-transition") === "true") {
+        document.documentElement.classList.add("page-arrival-transition");
+      }
+    </script>
+    <title>作品集</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="startAnimation.css" />
+    <script src="lib/lottie.min.js"></script>
+  </head>
+  <body class="works-page">
+    <div class="start-animation" aria-hidden="true">
+      <div class="container">
+        <div class="curtain">
+          <div class="curtain__left"></div>
+          <div class="curtain__right"></div>
+        </div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="brand-group">
+        <a class="brand" href="index.html">About Me</a>
+        <span class="brand-sep" aria-hidden="true">|</span>
+        <a class="brand-logo" href="https://www.fju.edu.tw/" target="_blank" rel="noreferrer" aria-label="輔仁大學官網">
+          <img src="img/logo.png" alt="輔仁大學" />
+        </a>
+      </div>
+      <nav class="nav" aria-label="主要導覽">
+        <a href="index.html#home">首頁</a>
+        <div class="nav-dropdown">
+          <a class="nav-dropdown-trigger active" href="works.html">選單</a>
+          <div class="nav-menu" aria-label="作品選單">
+            <a class="active" href="works.html">作品集</a>
+            <div class="nav-subdropdown">
+              <a class="nav-submenu-trigger" href="about.html">關於我</a>
+              <div class="nav-submenu" aria-label="關於我選項">
+                <a href="sponsor.html">贊助</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="index.html#contact">聯絡</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="切換深色模式">
+        <span class="theme-icon"><img src="assets/moon.svg" alt="" /></span>
+      </button>
+    </header>
+
+    <nav class="year-timeline" aria-label="作品年份時間軸">
+      <a href="#cas1">演算法</a>
+      <a href="#cas2">PR</a>
+      <a href="#cas3">ART</a>
+      <a href="#cas4">AE</a>
+      <a href="#cas5">ARDUINO</a>
+    </nav>
+
+    <main class="portfolio-main">
+      <section class="section portfolio-hero" aria-labelledby="portfolio-title">
+        <div class="section-heading reveal">
+          <p class="section-label">Portfolio Timeline</p>
+          <h1 id="portfolio-title">作品集</h1>
+          <p class="table-intro" data-typewriter>
+            在寂靜的夜晚，變個魔法般的魔術(都是黑歷史阿!!!別看);
+          </p>
+        </div>
+      </section>
+
+      <section id="cas1" class="section year-section" data-year="cas1">
+        <div class="year-heading">
+          <p class="section-label">Year</p>
+          <h2>演算法</h2>
+        </div>
+        <div class="portfolio-row">
+          <button class="carousel-button" type="button" data-carousel="prev" aria-label="查看上一批作品">‹</button>
+          <div class="portfolio-track" tabindex="0">
+            <article class="portfolio-card">
+              <span>01</span>
+              <h3>BUBBLE SORT</h3>
+              <div class="sort-anim" data-sort-anim data-algo="bubble" aria-hidden="true">
+                <div class="sort-anim__label">BUBBLE SORT</div>
+                <div class="sort-anim__bars"></div>
+              </div>
+              <p>氣泡排序：重複比較相鄰兩個元素，順序錯誤就交換，較大的值像氣泡一樣逐輪浮到尾端。時間複雜度 O(n²)。</p>
+              <button class="sort-anim__replay" type="button" data-sort-replay aria-label="重新播放並洗牌" title="重新播放並洗牌">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 12a9 9 0 1 1-3.5-7.1" />
+                  <path d="M21 3v5h-5" />
+                </svg>
+              </button>
+            </article>
+            <article class="portfolio-card">
+              <span>02</span>
+              <h3>SELECTION SORT</h3>
+              <div class="sort-anim" data-sort-anim data-algo="selection" aria-hidden="true">
+                <div class="sort-anim__label">SELECTION SORT</div>
+                <div class="sort-anim__bars"></div>
+              </div>
+              <p>選擇排序：每一輪從未排序區段中找出最小值，放到已排序區的尾端，逐步完成排序。時間複雜度 O(n²)。</p>
+              <button class="sort-anim__replay" type="button" data-sort-replay aria-label="重新播放並洗牌" title="重新播放並洗牌">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 12a9 9 0 1 1-3.5-7.1" />
+                  <path d="M21 3v5h-5" />
+                </svg>
+              </button>
+            </article>
+            <article class="portfolio-card">
+              <span>03</span>
+              <h3>INSERTION SORT</h3>
+              <div class="sort-anim" data-sort-anim data-algo="insertion" aria-hidden="true">
+                <div class="sort-anim__label">INSERTION SORT</div>
+                <div class="sort-anim__bars"></div>
+              </div>
+              <p>插入排序：把每個元素往前插入到已排序區段的正確位置，就像整理手中的撲克牌一樣。時間複雜度 O(n²)。</p>
+              <button class="sort-anim__replay" type="button" data-sort-replay aria-label="重新播放並洗牌" title="重新播放並洗牌">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 12a9 9 0 1 1-3.5-7.1" />
+                  <path d="M21 3v5h-5" />
+                </svg>
+              </button>
+            </article>
+            <article class="portfolio-card"><span>04</span><h3>互動導覽列</h3><p>製作下拉選單、active 狀態與平滑捲動。</p></article>
+          </div>
+          <button class="carousel-button" type="button" data-carousel="next" aria-label="查看下一批作品">›</button>
+        </div>
+      </section>
+
+      <section id="cas2" class="section year-section" data-year="cas2">
+        <div class="year-heading">
+          <p class="section-label">Year</p>
+          <h2>Premiere</h2>
+        </div>
+        <div class="portfolio-row">
+          <button class="carousel-button" type="button" data-carousel="prev" aria-label="查看上一批作品">‹</button>
+          <div class="portfolio-track" tabindex="0">
+            <article class="portfolio-card"><span>01</span><h3>2024/08/01</h3><iframe width="450" height="280" src="https://www.youtube.com/embed/QTrJUP1e2Wg?si=vTAhBUAve2mhxkUJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p>Tips.效果好像用太多了有點暈，下次加少點</p></article>
+            <article class="portfolio-card"><span>02</span><h3>2024/06/27</h3><iframe width="450" height="280" src="https://www.youtube.com/embed/EFPCfjJIIxA?si=i4g0DIryfu6UB8pZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p>Tips.剪成30FPS了，下次記得不要先把音樂拉進去</p></article>
+            <article class="portfolio-card"><span>03</span><h3>2024/03/27</h3><iframe width="450" height="280" src="https://www.youtube.com/embed/39JeGnGLjF4?si=R4QBjZxLeRuMAckr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p>Tips.蹦蹦蹦</p></article>
+            <article class="portfolio-card"><span>04</span><h3>2023/07/09</h3><iframe width="450" height="280" src="https://www.youtube.com/embed/B3wrxxS22YU?si=0BqFqSQLYLsrBMw6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p>Tips.純幹片一個</p></article>
+          </div>
+          <button class="carousel-button" type="button" data-carousel="next" aria-label="查看下一批作品">›</button>
+        </div>
+      </section>
+
+      <section id="cas3" class="section year-section" data-year="cas3">
+        <div class="year-heading">
+          <p class="section-label">Year</p>
+          <h2>ART</h2>
+        </div>
+        <div class="portfolio-row">
+          <button class="carousel-button" type="button" data-carousel="prev" aria-label="查看上一批作品">‹</button>
+          <div class="portfolio-track" tabindex="0">
+            <article class="portfolio-card"><span>01</span><h3>期中作業</h3><img class="card-video" src="./art/513170380 宋嘉竑-期中作業.png" alt="期中作業" loading="lazy" /><p>整合多頁面導覽、作品內容與聯絡方式。</p></article>
+            <article class="portfolio-card"><span>02</span><h3>空洞 nacho!</h3><img class="card-video" src="./art/空洞nacho!.png" alt="空洞 nacho!" loading="lazy" /><p>設計表格、狀態標籤與資料瀏覽介面。</p></article>
+            <article class="portfolio-card"><span>03</span><h3>學校</h3><img class="card-video" src="./art/學校1.jpg" alt="學校" loading="lazy" /><p>製作進站動畫，讓網頁進入時更有節奏。</p></article>
+          </div>
+          <button class="carousel-button" type="button" data-carousel="next" aria-label="查看下一批作品">›</button>
+        </div>
+      </section>
+
+      <section id="cas4" class="section year-section" data-year="cas4">
+        <div class="year-heading">
+          <p class="section-label">Year</p>
+          <h2>After Effects</h2>
+        </div>
+        <div class="portfolio-row">
+          <button class="carousel-button" type="button" data-carousel="prev" aria-label="查看上一批作品">‹</button>
+          <div class="portfolio-track" tabindex="0">
+            <article class="portfolio-card"><span>01</span><h3>2026/03/31</h3><div class="card-lottie" data-lottie="./sing/data_jessica.json"></div><p>重新整理視覺系統、資訊架構與作品呈現方式。</p></article>
+            <article class="portfolio-card"><span>02</span><h3>2026/03/31</h3><div class="card-lottie" data-lottie="./sing/data_text.json"></div><p>把不同年份的作品整理成可瀏覽的年度紀錄。</p></article>
+            <article class="portfolio-card"><span>03</span><h3>2024/12/02</h3><video class="card-video" src="./AE/main.mp4" autoplay muted loop playsinline preload="metadata"></video><p>製作按鈕、選單與滾動進場效果。</p></article>
+            <article class="portfolio-card"><span>04</span><h3>2025/01/10</h3><video class="card-video" src="./AE/06.mp4" autoplay muted loop playsinline preload="metadata"></video><p>調整小螢幕間距、字級與互動目標大小。</p></article>
+            <article class="portfolio-card"><span>05</span><h3>行動版優化</h3><p>調整小螢幕間距、字級與互動目標大小。</p></article>
+          </div>
+          <button class="carousel-button" type="button" data-carousel="next" aria-label="查看下一批作品">›</button>
+        </div>
+      </section>
+
+      <section id="cas5" class="section year-section" data-year="cas5">
+        <div class="year-heading">
+          <p class="section-label">Year</p>
+          <h2>ARDUINO</h2>
+        </div>
+        <div class="portfolio-row">
+          <button class="carousel-button" type="button" data-carousel="prev" aria-label="查看上一批作品">‹</button>
+          <div class="portfolio-track" tabindex="0">
+            <article class="portfolio-card"><span>01</span><h3>紅外線控制LED以及伺服馬達<iframe width="450" height="280" src="https://www.tinkercad.com/embed/ifBpcTSmQV6?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3><p>test</p></article>
+            <article class="portfolio-card"><span>02</span><h3>超音波+蜂鳴器<iframe width="450" height="280" src="https://www.tinkercad.com/embed/fjzB4JrxB0u?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
+            <article class="portfolio-card"><span>03</span><h3>光敏電阻＋類比Led燈<iframe width="450" height="280" src="https://www.tinkercad.com/embed/aI4fFzu8EBW?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
+            <article class="portfolio-card"><span>04</span><h3>可變電阻＋類比Led燈<iframe width="450" height="280" src="https://www.tinkercad.com/embed/e2oOAXpiG2Q?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
+            <article class="portfolio-card"><span>05</span><h3>2 Red-Yellow-Green + 1個7段顯示器<iframe width="450" height="280" src="https://www.tinkercad.com/embed/4TilPqdylRF?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
+          </div>
+          <button class="carousel-button" type="button" data-carousel="next" aria-label="查看下一批作品">›</button>
+        </div>
+      </section>
+    </main>
+
+    <button class="top-button" type="button" aria-label="回到頁面頂端">↑</button>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      if (sessionStorage.getItem("page-arrival-transition") === "true") {
+        document.documentElement.classList.add("page-arrival-transition");
+      }
+    </script>
+    <title>贊助</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="startAnimation.css" />
+  </head>
+  <body>
+    <div class="start-animation" aria-hidden="true">
+      <div class="container">
+        <div class="curtain">
+          <div class="curtain__left"></div>
+          <div class="curtain__right"></div>
+        </div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="brand-group">
+        <a class="brand" href="index.html">About Me</a>
+        <span class="brand-sep" aria-hidden="true">|</span>
+        <a class="brand-logo" href="https://www.fju.edu.tw/" target="_blank" rel="noreferrer" aria-label="輔仁大學官網">
+          <img src="img/logo.png" alt="輔仁大學" />
+        </a>
+      </div>
+      <nav class="nav" aria-label="主要導覽">
+        <a href="index.html#home">首頁</a>
+        <div class="nav-dropdown">
+          <a class="nav-dropdown-trigger active" href="works.html">選單</a>
+          <div class="nav-menu" aria-label="作品選單">
+            <a href="works.html">作品集</a>
+            <div class="nav-subdropdown">
+              <a class="nav-submenu-trigger active" href="about.html">關於我</a>
+              <div class="nav-submenu" aria-label="關於我選項">
+                <a class="active" href="sponsor.html">贊助</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="index.html#contact">聯絡</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="切換深色模式">
+        <span class="theme-icon"><img src="assets/moon.svg" alt="" /></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="section" aria-labelledby="sponsor-title">
+        <div class="reveal">
+          <p class="section-label">Support</p>
+          <h1 id="sponsor-title">贊助</h1>
+          <p class="section-copy" data-typewriter>
+            如果你喜歡我的作品，歡迎以下列任一方案支持我繼續創作。選擇一個適合你的贊助等級吧。
+          </p>
+        </div>
+
+        <div class="skill-grid sponsor-grid reveal reveal-delay-1">
+          <article class="skill-card sponsor-card">
+            <span class="sponsor-emoji" aria-hidden="true">🥉</span>
+            <h3>銅級</h3>
+            <p class="sponsor-price">$100</p>
+            <p>表達一份心意的支持，感謝你的鼓勵與肯定。</p>
+            <a class="button secondary" href="#">選擇銅級</a>
+          </article>
+
+          <article class="skill-card sponsor-card">
+            <span class="sponsor-emoji" aria-hidden="true">🥈</span>
+            <h3>銀級</h3>
+            <p class="sponsor-price">$300</p>
+            <p>更進一步的支持，幫助我投入更多時間在作品上。</p>
+            <a class="button secondary" href="#">選擇銀級</a>
+          </article>
+
+          <article class="skill-card sponsor-card">
+            <span class="sponsor-emoji" aria-hidden="true">🥇</span>
+            <h3>金級</h3>
+            <p class="sponsor-price">$500</p>
+            <p>最高等級的支持，成為持續創作最重要的後盾。</p>
+            <a class="button primary" href="#">選擇金級</a>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <button class="top-button" type="button" aria-label="回到頁面頂端">↑</button>
+
+    <script src="script.js"></script>
+  </body>
+</html>

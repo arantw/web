@@ -1,0 +1,202 @@
+/* 首次進入網站時使用的滿版窗簾動畫圖層。 */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+  animation-timing-function: ease;
+}
+
+.start-animation {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  background: transparent;
+  pointer-events: none;
+  animation: startOverlayExit 0.5s ease 2.15s forwards;
+}
+
+/* 站內切換到達新頁時，不顯示首次進入底幕，只播放開窗簾效果。 */
+.page-arrival-transition .start-animation:not(.is-page-transition) {
+  background: transparent;
+  pointer-events: none;
+  animation: startOverlayExit 0.35s ease 0.95s forwards;
+  opacity: 1;
+  visibility: visible;
+}
+
+.page-arrival-transition .start-animation:not(.is-page-transition) .container::before {
+  display: none;
+}
+
+.page-arrival-transition .start-animation:not(.is-page-transition) .curtain__left::before,
+.page-arrival-transition .start-animation:not(.is-page-transition) .curtain__right::before {
+  animation: open 0.7s ease-in-out 0.15s forwards;
+}
+
+/* 動畫畫布固定符合目前視窗大小。 */
+.container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+/* 首次進入時使用純色底幕，在窗簾打開前先遮住網頁內容。 */
+.container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #f7f4ef;
+  animation: startBaseReveal 0.7s ease-in-out 1.2s forwards;
+}
+
+/* 窗簾面板位在底幕上方。 */
+.curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.curtain__left,
+.curtain__right {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 150%;
+}
+
+/* 每片窗簾會先關上，再打開顯示底下的網頁。 */
+.curtain__left::before,
+.curtain__right::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  animation:
+    close 0.7s ease-in-out var(--close-delay, 0s) both,
+    open 0.7s ease-in-out var(--open-delay, 0s) forwards;
+}
+
+.curtain__left {
+  --close-delay: 0.2s;
+  --open-delay: 1.2s;
+  color: #bbb;
+}
+
+.curtain__right {
+  --close-delay: 0.35s;
+  --open-delay: 1.2s;
+  color: #999;
+  transform: scaleX(-1);
+}
+
+body.dark .container::before {
+  background: #0f0f16;
+}
+
+body.dark .curtain__left {
+  color: #2c2c39;
+}
+
+body.dark .curtain__right {
+  color: #1f1f2c;
+}
+
+/* 站內離開頁面時，不加背景，只用窗簾蓋住目前網頁。 */
+.start-animation.is-page-transition {
+  background: transparent;
+  pointer-events: auto;
+  animation: none;
+  opacity: 1;
+  visibility: visible;
+}
+
+.start-animation.is-page-transition .container::before {
+  display: none;
+}
+
+.start-animation.is-page-transition .curtain__left::before,
+.start-animation.is-page-transition .curtain__right::before {
+  animation: close 0.7s ease-in-out var(--close-delay, 0s) both;
+}
+
+@keyframes close {
+  from,
+  to {
+    transform-origin: left top;
+  }
+
+  from {
+    box-shadow: -10px -10px 16px rgba(0, 0, 0, 0);
+    transform: translateX(101%) rotate(-25deg);
+  }
+
+  50%,
+  to {
+    box-shadow: -60px -15px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  to {
+    transform: translateX(0%) rotate(0deg);
+  }
+}
+
+@keyframes open {
+  from,
+  to {
+    transform-origin: right top;
+  }
+
+  from,
+  50% {
+    box-shadow: -60px -15px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  to {
+    box-shadow: -10px -10px 16px rgba(0, 0, 0, 0);
+    transform: translateX(-101%) rotate(25deg);
+  }
+
+  from {
+    transform: translateX(0%) rotate(0deg);
+  }
+}
+
+@keyframes startOverlayExit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+@keyframes startBaseReveal {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .start-animation {
+    display: none;
+  }
+}
