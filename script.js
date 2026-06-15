@@ -136,7 +136,8 @@ if (typewriterTitles.length > 0 && !reduceMotion) {
 const waveTargets = [
   { canvas: document.getElementById("countdownWave"), color1: "--wave-color1", color2: "--wave-color2" },
   { canvas: document.getElementById("aboutWave"), color1: "--wave-color1", color2: "--wave-color2" },
-  { canvas: document.getElementById("sponsorWave"), color1: "--sponsor-wave1", color2: "--sponsor-wave2" },
+  { canvas: document.getElementById("sponsorWave"), color1: "--wave-color1", color2: "--wave-color2" },
+  { canvas: document.getElementById("worksWave"), color1: "--wave-color1", color2: "--wave-color2" },
 ].filter((target) => target.canvas);
 
 if (waveTargets.length > 0 && !reduceMotion) {
@@ -149,14 +150,17 @@ if (waveTargets.length > 0 && !reduceMotion) {
       this.color1Var = color1Var;
       this.color2Var = color2Var;
 
+      this.canvas = canvas;
+
       const ratio = window.devicePixelRatio || 1;
-      this.width = ratio * window.innerWidth;
+      // 以畫布實際渲染寬度（CSS width:100%）為準，避免用 window.innerWidth
+      // 在有捲軸或容器較窄時造成右側填不滿或溢出。
+      const cssWidth = canvas.clientWidth || canvas.offsetWidth || window.innerWidth;
+      this.width = ratio * cssWidth;
       this.height = ratio * 130;
 
-      this.canvas = canvas;
       this.canvas.width = this.width;
       this.canvas.height = this.height;
-      this.canvas.style.width = `${this.width / ratio}px`;
       this.canvas.style.height = `${this.height / ratio}px`;
       this.ctx = this.canvas.getContext("2d");
       this.running = false;

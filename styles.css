@@ -16,8 +16,6 @@
   --shadow: 0 22px 60px rgba(22, 35, 33, 0.12);
   --wave-color1: rgba(247, 244, 239, 0.55);
   --wave-color2: rgba(247, 244, 239, 0.92);
-  --sponsor-wave1: rgba(90, 166, 187, 0.40);
-  --sponsor-wave2: rgba(108, 154, 171, 0.62);
   --info-box-bg-start: rgba(255, 255, 255, 0.35);
   --info-box-bg-end: rgba(255, 255, 255, 0.75);
   --img-brightness: brightness(100%);
@@ -42,8 +40,6 @@ body.dark {
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   --wave-color1: rgba(15, 15, 22, 0.55);
   --wave-color2: rgba(15, 15, 22, 0.92);
-  --sponsor-wave1: rgba(157, 124, 216, 0.38);
-  --sponsor-wave2: rgba(157, 124, 216, 0.60);
   --info-box-bg-start: rgba(32, 27, 38, 0.6);
   --info-box-bg-end: rgba(32, 29, 42, 0.9);
   --img-brightness: brightness(80%);
@@ -628,16 +624,26 @@ h3 {
   perspective: 1000px;
 }
 
-/* 橫幅背景圖，依主題調整亮度。 */
-.about-banner-bg {
+/* 橫幅背景圖，依主題調整亮度。共用版面屬性，background-image 由各頁面類別自訂，可單獨更換。 */
+.about-banner-bg,
+.works-banner-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: url("./img/121764304_p0.jpg");
   background-size: cover;
   background-position: center;
   filter: var(--img-brightness);
   transition: filter 0.5s ease;
+}
+
+/* 關於我頁面的橫幅背景圖。 */
+.about-banner-bg {
+  background-image: url("./img/121764304_p0.jpg");
+}
+
+/* 作品集頁面的橫幅背景圖（可獨立更換成不同圖片）。 */
+.works-banner-bg {
+  background-image: url("./img/F08kLh7aAAAa4Bh.png");
 }
 
 /* 蓋在背景圖上的漸層遮罩，往下融入頁面背景色。 */
@@ -1042,8 +1048,20 @@ body.dark .hero.about-banner::after {
   position: relative;
   height: 150px;
   margin-top: clamp(50px, 9vw, 110px);
-  overflow: hidden;
-  background: linear-gradient(180deg, transparent, var(--accent-soft));
+  overflow: visible;
+  background: var(--surface-soft);
+}
+
+/* 與 index 的 countdown-section 一致：上緣用柔和漸層銜接頁面背景。 */
+.sponsor-wave::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: clamp(58px, 9vw, 120px);
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--surface-soft));
 }
 
 .sponsor-wave .section-wave {
@@ -1183,19 +1201,57 @@ body.dark .hero.about-banner::after {
   height: 0;
 }
 
+/* --timeline-gutter：為右側固定年份時間軸保留的留白寬度。
+   只套用在會撞到時間軸的捲動內容（.year-section），不放在 body，
+   讓頁首、頁首背景、波浪等裝飾層能自然滿版、不必逐一抵銷。 */
 .works-page {
-  padding-right: 104px;
+  --timeline-gutter: 104px;
 }
 
 .portfolio-main {
   overflow: clip;
 }
 
-/* 作品集頁首屏，讓標題區符合視窗高度。 */
+/* 作品集頁首屏，讓標題區符合視窗高度。背景圖重用 .about-banner-bg。 */
 .portfolio-hero {
+  position: relative;
+  isolation: isolate;
   min-height: calc(100svh - 79px);
   display: grid;
   align-items: end;
+}
+
+/* 疊在背景圖上的漸層遮罩，與首頁 .hero::after 相同做法：
+   直向漸層在 68% 才柔和轉折避免分層感，再疊一層橫向漸層淡化左側提升標題可讀性。
+   底部收尾用 --bg 以銜接下方波浪與作品區塊。 */
+.portfolio-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(247, 244, 239, 0.12), rgba(247, 244, 239, 0.12) 68%, var(--bg) 100%),
+    linear-gradient(90deg, rgba(247, 244, 239, 0.92), rgba(247, 244, 239, 0.62) 45%, rgba(247, 244, 239, 0.28));
+}
+
+body.dark .portfolio-hero::after {
+  background:
+    linear-gradient(to bottom, rgba(15, 15, 22, 0.18), rgba(15, 15, 22, 0.18) 68%, var(--bg) 100%),
+    linear-gradient(90deg, rgba(15, 15, 22, 0.92), rgba(15, 15, 22, 0.68) 45%, rgba(15, 15, 22, 0.34));
+}
+
+.portfolio-hero .section-heading {
+  position: relative;
+  /* 高於波浪（z-index:2），避免底部對齊的標題被波浪畫布蓋住下緣。 */
+  z-index: 3;
+  /* 霧面改為淺色系（同 index），標題改用主題文字色才清楚。 */
+  color: var(--text);
+}
+
+/* 頁首底部的波浪，用來和下方各作品（cas）區塊分隔。 */
+.portfolio-hero .section-wave {
+  bottom: -1px;
 }
 
 /* 右側年份刻度尺：點擊年份可跳到對應作品區塊。 */
@@ -1298,6 +1354,8 @@ body.dark .hero.about-banner::after {
   display: grid;
   align-content: center;
   scroll-margin-top: 96px;
+  /* 右側多留 --timeline-gutter，讓標題與作品列不被固定的年份時間軸壓到。 */
+  padding-right: calc(clamp(20px, 6vw, 72px) + var(--timeline-gutter, 0px));
   opacity: var(--year-opacity, 0.2);
   transform: translateY(calc((1 - var(--year-opacity, 0.2)) * 22px));
   transition: opacity 0.12s linear, transform 0.12s linear;
@@ -1686,8 +1744,9 @@ body.dark .hero.about-banner::after {
     min-height: auto;
   }
 
+  /* 小螢幕時間軸改成底部橫條，右側不再需要留白。 */
   .works-page {
-    padding-right: 0;
+    --timeline-gutter: 0px;
   }
 
   .year-timeline {
