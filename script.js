@@ -136,6 +136,7 @@ if (typewriterTitles.length > 0 && !reduceMotion) {
 const waveTargets = [
   { canvas: document.getElementById("countdownWave"), color1: "--wave-color1", color2: "--wave-color2" },
   { canvas: document.getElementById("aboutWave"), color1: "--wave-color1", color2: "--wave-color2" },
+  { canvas: document.getElementById("sponsorWave"), color1: "--sponsor-wave1", color2: "--sponsor-wave2" },
 ].filter((target) => target.canvas);
 
 if (waveTargets.length > 0 && !reduceMotion) {

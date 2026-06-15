@@ -62,31 +62,50 @@
         </div>
 
         <div class="skill-grid sponsor-grid reveal reveal-delay-1">
-          <article class="skill-card sponsor-card">
+          <article class="skill-card sponsor-card sponsor-card--bronze">
             <span class="sponsor-emoji" aria-hidden="true">🥉</span>
             <h3>銅級</h3>
-            <p class="sponsor-price">$100</p>
+            <p class="sponsor-price">$100<span class="sponsor-unit">/ 次</span></p>
             <p>表達一份心意的支持，感謝你的鼓勵與肯定。</p>
+            <ul class="sponsor-perks">
+              <li>專屬感謝訊息</li>
+              <li>署名於支持者牆</li>
+            </ul>
             <a class="button secondary" href="#">選擇銅級</a>
           </article>
 
-          <article class="skill-card sponsor-card">
+          <article class="skill-card sponsor-card sponsor-card--silver">
             <span class="sponsor-emoji" aria-hidden="true">🥈</span>
             <h3>銀級</h3>
-            <p class="sponsor-price">$300</p>
+            <p class="sponsor-price">$300<span class="sponsor-unit">/ 次</span></p>
             <p>更進一步的支持，幫助我投入更多時間在作品上。</p>
+            <ul class="sponsor-perks">
+              <li>包含銅級所有回饋</li>
+              <li>作品高解析下載</li>
+              <li>幕後創作花絮</li>
+            </ul>
             <a class="button secondary" href="#">選擇銀級</a>
           </article>
 
-          <article class="skill-card sponsor-card">
+          <article class="skill-card sponsor-card sponsor-card--gold sponsor-card--featured">
+            <span class="sponsor-badge" aria-hidden="true">最受歡迎</span>
             <span class="sponsor-emoji" aria-hidden="true">🥇</span>
             <h3>金級</h3>
-            <p class="sponsor-price">$500</p>
+            <p class="sponsor-price">$500<span class="sponsor-unit">/ 次</span></p>
             <p>最高等級的支持，成為持續創作最重要的後盾。</p>
+            <ul class="sponsor-perks">
+              <li>包含銀級所有回饋</li>
+              <li>優先委託與許願</li>
+              <li>專屬客製化作品</li>
+            </ul>
             <a class="button primary" href="#">選擇金級</a>
           </article>
         </div>
       </section>
+
+      <div class="sponsor-wave" aria-hidden="true">
+        <canvas id="sponsorWave" class="section-wave"></canvas>
+      </div>
     </main>
 
     <button class="top-button" type="button" aria-label="回到頁面頂端">↑</button>

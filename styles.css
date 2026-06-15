@@ -16,6 +16,8 @@
   --shadow: 0 22px 60px rgba(22, 35, 33, 0.12);
   --wave-color1: rgba(247, 244, 239, 0.55);
   --wave-color2: rgba(247, 244, 239, 0.92);
+  --sponsor-wave1: rgba(90, 166, 187, 0.40);
+  --sponsor-wave2: rgba(108, 154, 171, 0.62);
   --info-box-bg-start: rgba(255, 255, 255, 0.35);
   --info-box-bg-end: rgba(255, 255, 255, 0.75);
   --img-brightness: brightness(100%);
@@ -40,6 +42,8 @@ body.dark {
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   --wave-color1: rgba(15, 15, 22, 0.55);
   --wave-color2: rgba(15, 15, 22, 0.92);
+  --sponsor-wave1: rgba(157, 124, 216, 0.38);
+  --sponsor-wave2: rgba(157, 124, 216, 0.60);
   --info-box-bg-start: rgba(32, 27, 38, 0.6);
   --info-box-bg-end: rgba(32, 29, 42, 0.9);
   --img-brightness: brightness(80%);
@@ -873,19 +877,107 @@ body.dark .hero.about-banner::after {
 /* 贊助頁：三個贊助等級卡片，置中排列並把按鈕對齊卡片底部。 */
 .sponsor-grid {
   margin-top: clamp(24px, 4vw, 40px);
+  align-items: stretch;
 }
 
 .sponsor-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 10px;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* 每張卡片頂部一條依等級配色的漸層飾條。 */
+.sponsor-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: linear-gradient(90deg, var(--tier-from), var(--tier-to));
+}
+
+/* 卡片背後淡淡的等級色暈染，hover 時更明顯。 */
+.sponsor-card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: radial-gradient(120% 80% at 50% 0%, var(--tier-glow), transparent 70%);
+  opacity: 0.5;
+  transition: opacity 0.25s ease;
+}
+
+.sponsor-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+  border-color: color-mix(in srgb, var(--tier-to) 55%, var(--line));
+}
+
+.sponsor-card:hover::after {
+  opacity: 1;
+}
+
+/* 各等級的色彩主題（飾條與暈染）。 */
+.sponsor-card--bronze {
+  --tier-from: #c98a52;
+  --tier-to: #e6b27a;
+  --tier-glow: rgba(201, 138, 82, 0.16);
+}
+
+.sponsor-card--silver {
+  --tier-from: #9aa3ad;
+  --tier-to: #cdd5dd;
+  --tier-glow: rgba(154, 163, 173, 0.16);
+}
+
+.sponsor-card--gold {
+  --tier-from: #d6a73a;
+  --tier-to: #f3d27a;
+  --tier-glow: rgba(214, 167, 58, 0.20);
+}
+
+/* 主推方案：稍微放大、加上主色外框與更強陰影。 */
+.sponsor-card--featured {
+  border-color: color-mix(in srgb, var(--tier-to) 60%, var(--line));
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 821px) {
+  .sponsor-card--featured {
+    transform: scale(1.04);
+  }
+
+  .sponsor-card--featured:hover {
+    transform: translateY(-6px) scale(1.04);
+  }
+}
+
+/* 「最受歡迎」徽章。 */
+.sponsor-badge {
+  position: absolute;
+  top: 14px;
+  right: -34px;
+  transform: rotate(45deg);
+  width: 130px;
+  padding: 4px 0;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #1f2526;
+  background: linear-gradient(90deg, var(--tier-from), var(--tier-to));
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
 }
 
 .sponsor-card .sponsor-emoji {
-  font-size: 2.6rem;
+  font-size: 2.8rem;
   line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
 }
 
 .sponsor-card h3 {
@@ -895,12 +987,67 @@ body.dark .hero.about-banner::after {
 .sponsor-card .sponsor-price {
   margin: 0;
   color: var(--accent-strong);
-  font-size: 1.6rem;
+  font-size: 1.9rem;
   font-weight: 800;
+}
+
+.sponsor-card .sponsor-unit {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+/* 各等級的回饋清單。 */
+.sponsor-perks {
+  list-style: none;
+  margin: 6px 0 14px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+}
+
+.sponsor-perks li {
+  position: relative;
+  padding-left: 26px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.sponsor-perks li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
 }
 
 .sponsor-card .button {
   margin-top: auto;
+  width: 100%;
+}
+
+/* 頁面底部的聲波動畫帶，作為贊助頁的收尾裝飾。 */
+.sponsor-wave {
+  position: relative;
+  height: 150px;
+  margin-top: clamp(50px, 9vw, 110px);
+  overflow: hidden;
+  background: linear-gradient(180deg, transparent, var(--accent-soft));
+}
+
+.sponsor-wave .section-wave {
+  bottom: -1px;
 }
 
 /* 首頁精選作品時間線。 */
