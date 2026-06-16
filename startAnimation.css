@@ -139,6 +139,21 @@ body.dark .curtain__right {
   animation: close 0.7s ease-in-out var(--close-delay, 0s) both;
 }
 
+/* 站內 about ↔ sponsor 無重新載入切換：重用同一張窗簾，先闔上、抽換內容、再拉開。
+   不顯示首次進入的純色底幕，並在拉開後淡出移除圖層。窗簾的 close→open 由上方
+   .curtain__left/right::before 的預設動畫負責，這裡只負責去掉底幕與收尾淡出。 */
+.start-animation.is-spa-transition {
+  background: transparent;
+  pointer-events: auto;
+  opacity: 1;
+  visibility: visible;
+  animation: startOverlayExit 0.4s ease 1.9s forwards;
+}
+
+.start-animation.is-spa-transition .container::before {
+  display: none;
+}
+
 @keyframes close {
   from,
   to {

@@ -202,6 +202,22 @@
 
     <button class="top-button" type="button" aria-label="回到頁面頂端">↑</button>
 
+    <!-- 背景音樂：進入頁面後自動循環播放，右下角按鈕可開關。 -->
+    <audio id="bgm" src="bgm/BGM 夕暮れ、路地裏の白猫.mp3" loop preload="auto"></audio>
+    <button class="bgm-toggle" type="button" data-bgm-toggle aria-label="背景音樂開關" title="背景音樂">
+      <svg class="bgm-icon-on" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 18V5l12-2v13" />
+        <circle cx="6" cy="18" r="3" />
+        <circle cx="18" cy="16" r="3" />
+      </svg>
+      <svg class="bgm-icon-off" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 18V5l12-2v13" />
+        <circle cx="6" cy="18" r="3" />
+        <circle cx="18" cy="16" r="3" />
+        <line x1="3" y1="3" x2="21" y2="21" />
+      </svg>
+    </button>
+
     <script src="script.js"></script>
   </body>
 </html>

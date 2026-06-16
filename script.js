@@ -100,6 +100,10 @@ revealItems.forEach((item) => {
   revealObserver.observe(item);
 });
 
+// 提供給 SPA 切換後，觀察新插入內容裡尚未顯示的 .reveal 元素。
+window.__observeReveals = (root = document) =>
+  root.querySelectorAll(".reveal:not(.is-visible)").forEach((item) => revealObserver.observe(item));
+
 // 標題打字機效果：逐字輸出文字，並在結尾保留閃爍游標。
 const typewriterTitles = document.querySelectorAll("[data-typewriter]");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -131,16 +135,24 @@ if (typewriterTitles.length > 0 && !reduceMotion) {
   });
 }
 
+// 提供給 SPA 切換後，對新插入內容裡的標題重新執行打字機效果。
+window.__runTypewriters = (root = document) => {
+  if (reduceMotion) return;
+  root.querySelectorAll("[data-typewriter]").forEach((el) => typeTitle(el));
+};
+
 // 各頁面橫幅底部的聲波動畫（移植自 ba-banner.js 的 SiriWave）。
 // 每個畫布依照「下一個區塊」的背景色，套用對應的顏色 CSS 變數，避免波浪顏色與接續區塊不一致。
-const waveTargets = [
-  { canvas: document.getElementById("countdownWave"), color1: "--wave-color1", color2: "--wave-color2" },
-  { canvas: document.getElementById("aboutWave"), color1: "--wave-color1", color2: "--wave-color2" },
-  { canvas: document.getElementById("sponsorWave"), color1: "--wave-color1", color2: "--wave-color2" },
-  { canvas: document.getElementById("worksWave"), color1: "--wave-color1", color2: "--wave-color2" },
-].filter((target) => target.canvas);
+// 每次初始化時重新掃描畫布，讓 SPA 切換（about ↔ sponsor）後仍能對應到新內容。
+const getWaveTargets = () =>
+  [
+    { canvas: document.getElementById("countdownWave"), color1: "--wave-color1", color2: "--wave-color2" },
+    { canvas: document.getElementById("aboutWave"), color1: "--wave-color1", color2: "--wave-color2" },
+    { canvas: document.getElementById("sponsorWave"), color1: "--wave-color1", color2: "--wave-color2" },
+    { canvas: document.getElementById("worksWave"), color1: "--wave-color1", color2: "--wave-color2" },
+  ].filter((target) => target.canvas);
 
-if (waveTargets.length > 0 && !reduceMotion) {
+{
   class SiriWave {
     constructor(canvas, color1Var, color2Var) {
       this.range = 1;
@@ -227,7 +239,9 @@ if (waveTargets.length > 0 && !reduceMotion) {
 
   const initWaves = () => {
     waves.forEach((wave) => wave.stop());
-    waves = waveTargets.map(({ canvas, color1, color2 }) => {
+    waves = [];
+    if (reduceMotion) return;
+    waves = getWaveTargets().map(({ canvas, color1, color2 }) => {
       const wave = new SiriWave(canvas, color1, color2);
       wave.start();
       return wave;
@@ -239,13 +253,21 @@ if (waveTargets.length > 0 && !reduceMotion) {
 
   // 切換主題後重新啟動聲波動畫，讓波浪顏色套用新主題的 CSS 變數。
   themeToggle.addEventListener("click", initWaves);
+
+  // 提供給 SPA 切換（about ↔ sponsor）後重新初始化聲波動畫。
+  window.__initWaves = initWaves;
 }
 
 // 關於我頁面：歡迎卡片的滑鼠視差效果（移植自 ba-banner.js 的 Welcome-Box 視差）。
-const aboutWelcomeBox = document.getElementById("aboutWelcomeBox");
-const aboutInfoBox = document.getElementById("aboutInfoBox");
+// 包成函式，讓 SPA 切回 about 時可對新插入的卡片重新綁定。
+const initAboutParallax = () => {
+  const aboutWelcomeBox = document.getElementById("aboutWelcomeBox");
+  const aboutInfoBox = document.getElementById("aboutInfoBox");
 
-if (aboutWelcomeBox && aboutInfoBox && !reduceMotion) {
+  if (!(aboutWelcomeBox && aboutInfoBox) || reduceMotion) {
+    return;
+  }
+
   const tiltDivisor = 20;
 
   const getMouseAngle = (x, y) => {
@@ -269,7 +291,10 @@ if (aboutWelcomeBox && aboutInfoBox && !reduceMotion) {
     aboutWelcomeBox.style.transform = "";
     aboutInfoBox.style.background = "";
   });
-}
+};
+
+initAboutParallax();
+window.__initAboutParallax = initAboutParallax;
 
 // 作品集頁：依照年份區塊與視窗中心的距離，控制淡入淡出與刻度高亮。
 const updateActiveYear = () => {
@@ -366,24 +391,35 @@ const navigateWithTransition = (url) => {
   window.location.href = url;
 };
 
-document.querySelectorAll("a[href]").forEach((link) => {
-  link.addEventListener("click", (event) => {
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+// 綁定站內連結的關窗簾轉場；可重複呼叫（SPA 切換後對新內容補綁），已綁定者會跳過。
+const bindTransitionLinks = (root = document) => {
+  root.querySelectorAll("a[href]").forEach((link) => {
+    if (link.dataset.transitionBound) {
       return;
     }
+    link.dataset.transitionBound = "1";
 
-    if (!isInternalPageLink(link)) {
-      return;
-    }
+    link.addEventListener("click", (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+        return;
+      }
 
-    event.preventDefault();
-    createPageTransition();
+      if (!isInternalPageLink(link)) {
+        return;
+      }
 
-    window.setTimeout(() => {
-      navigateWithTransition(link.href);
-    }, 1050);
+      event.preventDefault();
+      createPageTransition();
+
+      window.setTimeout(() => {
+        navigateWithTransition(link.href);
+      }, 1050);
+    });
   });
-});
+};
+
+bindTransitionLinks();
+window.__bindTransitionLinks = bindTransitionLinks;
 
 (function () {
   const target = new Date('2026-08-08T00:00:00+08:00');
@@ -640,7 +676,7 @@ if (typeof lottie !== "undefined") {
 // 右下角按鈕可隨時開關，狀態會記在 localStorage。
 (function () {
   const bgm = document.getElementById("bgm");
-  if (!bgm) return; // 只有 about 頁有 <audio id="bgm">
+  if (!bgm) return; // 只有含 <audio id="bgm"> 的頁面（about、sponsor）才啟用
   const toggle = document.querySelector("[data-bgm-toggle]");
 
   const TARGET_VOLUME = 0.1;
@@ -658,6 +694,51 @@ if (typeof lottie !== "undefined") {
     bgm.src = tracks[activeKey];
   }
   bgm.volume = TARGET_VOLUME;
+
+  // 跨頁續播：把曲目與播放位置記在 sessionStorage，換頁後從同一處接續，
+  // 讓整頁導覽（首頁／作品集／關於我／贊助之間）也不會有音樂上的隔斷。
+  const POS_KEY = "bgm-pos";
+  let resumeTime = 0;
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(POS_KEY) || "null");
+    if (saved && saved.track === activeKey && Number.isFinite(saved.time) && saved.time > 0) {
+      resumeTime = saved.time;
+    }
+  } catch (e) {
+    /* 忽略損毀的續播資料 */
+  }
+
+  // currentTime 需在 metadata 載入後才能設定；資料已快取通常很快就緒。
+  const applyResume = () => {
+    if (resumeTime > 0) {
+      try {
+        bgm.currentTime = resumeTime;
+      } catch (e) {
+        /* 部分情況下尚不可設定，忽略即可 */
+      }
+      resumeTime = 0; // 只接續一次
+    }
+  };
+  if (resumeTime > 0) {
+    if (bgm.readyState >= 1) {
+      applyResume();
+    } else {
+      bgm.addEventListener("loadedmetadata", applyResume, { once: true });
+    }
+  }
+
+  // 持續記錄目前位置（播放中才記），並在離開頁面前再保存一次。
+  const savePosition = () => {
+    if (!bgm.paused && Number.isFinite(bgm.currentTime)) {
+      try {
+        sessionStorage.setItem(POS_KEY, JSON.stringify({ track: activeKey, time: bgm.currentTime }));
+      } catch (e) {
+        /* 儲存空間不足等情況，忽略 */
+      }
+    }
+  };
+  bgm.addEventListener("timeupdate", savePosition);
+  window.addEventListener("pagehide", savePosition);
 
   // 音量淡入/淡出：以固定間隔逐步逼近目標音量，結束後執行 done。
   let fadeTimer = null;
@@ -757,4 +838,152 @@ if (typeof lottie !== "undefined") {
 
   syncIcon();
   startPlayback();
+})();
+
+// ── 關於我 ↔ 贊助：無縫切換 ────────────────────────────────────────
+// 這兩頁之間切換時，只抽換 <main> 內容、不重新載入整頁，
+// 因此標頭的 <audio id="bgm"> 不會被重建，背景音樂得以連續播放、不中斷。
+// 進站時會先預載另一方，達成「同時載入另一方」。
+(function () {
+  const fileOf = (url) => new URL(url, location.href).pathname.split("/").pop() || "index.html";
+  const PAIR = { "about.html": "sponsor.html", "sponsor.html": "about.html" };
+
+  let currentFile = fileOf(location.href);
+  if (!PAIR[currentFile]) {
+    return; // 只在關於我 / 贊助兩頁啟用
+  }
+
+  // 確保贊助頁標題用的字型存在（SPA 切換不會載入 sponsor.html 的 <head>）。
+  if (!document.querySelector('link[href*="Zen+Maru+Gothic"]')) {
+    const fontLink = document.createElement("link");
+    fontLink.rel = "stylesheet";
+    fontLink.href = "https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap";
+    document.head.append(fontLink);
+  }
+
+  const parser = new DOMParser();
+  const cache = new Map(); // file -> { main: <main> 節點, title }
+
+  const fetchPage = (file) => {
+    if (cache.has(file)) {
+      return Promise.resolve(cache.get(file));
+    }
+    return fetch(file, { credentials: "same-origin" })
+      .then((res) => res.text())
+      .then((html) => {
+        const doc = parser.parseFromString(html, "text/html");
+        const entry = { main: doc.querySelector("main"), title: doc.title };
+        cache.set(file, entry);
+        return entry;
+      });
+  };
+
+  // 同步標頭導覽的 active 狀態（標頭不抽換，需手動更新）。
+  const updateHeaderActive = (file) => {
+    const isSponsor = file === "sponsor.html";
+    const dropdownTrigger = document.querySelector(".nav-dropdown-trigger");
+    const sponsorLink = document.querySelector('.nav-submenu a[href="sponsor.html"]');
+    if (dropdownTrigger) dropdownTrigger.classList.toggle("active", isSponsor);
+    if (sponsorLink) sponsorLink.classList.toggle("active", isSponsor);
+  };
+
+  // 實際抽換 <main> 內容並重新初始化互動效果（不含窗簾動畫）。
+  const applySwap = (file, push) =>
+    fetchPage(file).then((entry) => {
+      if (!entry || !entry.main) {
+        location.href = file; // 取不到內容就退回正常導覽
+        return;
+      }
+
+      const oldMain = document.querySelector("main");
+      const newMain = document.importNode(entry.main, true);
+      oldMain.replaceWith(newMain);
+
+      document.title = entry.title;
+      currentFile = file;
+      updateHeaderActive(file);
+
+      if (push) {
+        history.pushState({ spa: file }, "", file);
+      }
+      window.scrollTo(0, 0);
+
+      // 重新初始化新內容裡的互動效果；標頭與背景音樂不動，故音樂不中斷。
+      if (window.__initWaves) window.__initWaves();
+      if (window.__runTypewriters) window.__runTypewriters(newMain);
+      if (window.__observeReveals) window.__observeReveals(newMain);
+      if (window.__initAboutParallax) window.__initAboutParallax();
+      if (window.__bindTransitionLinks) window.__bindTransitionLinks(newMain);
+
+      fetchPage(PAIR[file]); // 持續預載下一個對手頁
+    });
+
+  const reduceMotionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  // 建立一張只屬於本次切換的窗簾圖層，沿用 startAnimation.css 的 close→open 動畫。
+  const createSpaCurtain = () => {
+    const overlay = document.createElement("div");
+    overlay.className = "start-animation is-spa-transition";
+    overlay.setAttribute("aria-hidden", "true");
+    overlay.innerHTML = `
+      <div class="container">
+        <div class="curtain">
+          <div class="curtain__left"></div>
+          <div class="curtain__right"></div>
+        </div>
+      </div>`;
+    document.body.append(overlay);
+    return overlay;
+  };
+
+  // 點擊切換：放下窗簾 → 完全遮住時抽換內容 → 拉開窗簾。和整頁導覽相同的視覺。
+  const swapTo = (file, push) => {
+    fetchPage(file); // 趁關窗簾期間先把內容準備好
+
+    if (reduceMotionMq.matches) {
+      applySwap(file, push); // 偏好減少動態：直接抽換、不放窗簾
+      return;
+    }
+
+    const overlay = createSpaCurtain();
+    // 窗簾約在 1.05s 完全闔上、1.2s 開始拉開，故在中間（覆蓋滿版時）才抽換內容。
+    window.setTimeout(() => applySwap(file, push), 1120);
+    // 開窗簾並淡出後移除圖層。
+    window.setTimeout(() => overlay.remove(), 2400);
+  };
+
+  // 進站即預載另一方。
+  fetchPage(PAIR[currentFile]);
+
+  // 攔截「切到另一方」的連結：用 capture 階段搶先，阻止既有的關窗簾整頁導覽。
+  document.addEventListener(
+    "click",
+    (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+        return;
+      }
+      const link = event.target.closest && event.target.closest("a[href]");
+      if (!link) {
+        return;
+      }
+      if (new URL(link.href, location.href).origin !== location.origin) {
+        return;
+      }
+      if (fileOf(link.href) !== PAIR[currentFile]) {
+        return; // 只接管切換到另一方，其餘交給原本的行為
+      }
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      swapTo(PAIR[currentFile], true);
+    },
+    true
+  );
+
+  // 上一頁／下一頁：在兩頁之間時同步抽換內容（與整頁導覽一致，不放窗簾）。
+  window.addEventListener("popstate", () => {
+    const file = fileOf(location.href);
+    if (PAIR[file] && file !== currentFile) {
+      applySwap(file, false);
+    }
+  });
 })();
