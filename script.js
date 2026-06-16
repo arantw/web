@@ -650,6 +650,9 @@ if (typeof lottie !== "undefined") {
       loop: true,
       autoplay: !reduceMotion, // 尊重「減少動態」偏好：不自動播放，僅顯示第一幀
       path: el.dataset.lottie,
+      // 外部圖片素材（如 data_text.json 引用的 img_*.png）統一從 img/ 載入；
+      // 內嵌圖片的動畫（data_jessica.json）不受此設定影響。
+      assetsPath: "img/",
     });
 
     // 減少動態時停在第一幀，避免畫面靜止卻空白。
@@ -673,13 +676,13 @@ if (typeof lottie !== "undefined") {
 })();
 
 // about 頁背景音樂：進站後自動循環播放；被瀏覽器擋下時改在第一次互動時播放。
-// 右下角按鈕可隨時開關，狀態會記在 localStorage。
+// 左下角按鈕可隨時開關，狀態會記在 localStorage。
 (function () {
   const bgm = document.getElementById("bgm");
   if (!bgm) return; // 只有含 <audio id="bgm"> 的頁面（about、sponsor）才啟用
   const toggle = document.querySelector("[data-bgm-toggle]");
 
-  const TARGET_VOLUME = 0.1;
+  const TARGET_VOLUME = 0.2;
 
   // 兩首背景音樂：淺色模式用第一首，夜間模式用第二首。
   const tracks = {
