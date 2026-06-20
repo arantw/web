@@ -953,12 +953,37 @@ body.dark .sponsor-section {
   box-shadow: var(--shadow);
 }
 
-/* 主推卡片：加上主色外框與柔光，桌機略為放大。 */
+/* 主推卡片：加上外框與柔光，桌機略為放大。外框色取自所屬等級（--tier），預設退回主色。 */
 .sponsor-card--featured {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent),
-    0 18px 50px color-mix(in srgb, var(--accent) 22%, transparent);
+  border-color: var(--tier, var(--accent));
+  box-shadow: 0 0 0 1px var(--tier, var(--accent)),
+    0 18px 50px color-mix(in srgb, var(--tier, var(--accent)) 22%, transparent);
 }
+
+/* 三種等級的外框配色，對應「恩人牆」的微光（燭火暖金）／月光（清冷銀藍）／包養（尊爵金）。 */
+.sponsor-card--glow { --tier: #d99a3e; }
+.sponsor-card--moon { --tier: #6f9ad0; }
+.sponsor-card--lux  { --tier: #c9a227; }
+body.dark .sponsor-card--glow { --tier: #f0b25e; }
+body.dark .sponsor-card--moon { --tier: #aebfd8; }
+body.dark .sponsor-card--lux  { --tier: #ffd86b; }
+
+.sponsor-card--glow,
+.sponsor-card--moon,
+.sponsor-card--lux {
+  border-color: color-mix(in srgb, var(--tier) 60%, var(--line));
+}
+.sponsor-card--glow:hover,
+.sponsor-card--moon:hover,
+.sponsor-card--lux:hover {
+  border-color: var(--tier);
+  box-shadow:
+    0 0 0 1px var(--tier),
+    0 18px 50px color-mix(in srgb, var(--tier) 28%, transparent);
+}
+
+/* 主推徽章一併換成所屬等級色，與外框呼應。 */
+.sponsor-card--moon .sponsor-badge { background: var(--tier); }
 
 @media (min-width: 821px) {
   .sponsor-card--featured {
@@ -1144,6 +1169,301 @@ body.dark .sponsor-section {
   margin: clamp(34px, 6vw, 72px);
   padding: clamp(34px, 6vw, 70px);
   border-top: 1px solid var(--line);
+}
+
+/* 關於我頁「恩人牆」區塊：靈感取自範例的互動名字牆，
+   改用全站主題變數重寫，淺色／深色都自動套色。 */
+.gratitude-intro {
+  max-width: 640px;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+/* 特殊範圍：帶有牌匾與四角刻痕的框，承載互動名單。外框統一使用淡金色（--gleam）。 */
+.gratitude-frame {
+  --gleam: #d8bd80;
+  position: relative;
+  margin-top: clamp(34px, 5vw, 56px);
+  padding: clamp(40px, 6vw, 72px) clamp(24px, 5vw, 60px) clamp(26px, 4vw, 44px);
+  border: 1px solid var(--gleam);
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 80% at 50% -10%,
+      color-mix(in srgb, var(--accent-soft) 70%, transparent), transparent 60%),
+    var(--surface);
+  box-shadow: var(--shadow);
+  transition: border-color 0.45s ease, box-shadow 0.45s ease;
+}
+body.dark .gratitude-frame { --gleam: #e3cd95; }
+/* 游標進入整個「特別鳴謝」框時，最外層亮起淡金色光暈（取材自範例 card hover 發光）。 */
+.gratitude-frame:hover {
+  border-color: var(--gleam);
+  box-shadow:
+    var(--shadow),
+    0 0 0 0.5px var(--gleam),
+    0 0 16px color-mix(in srgb, var(--gleam) 85%, transparent),
+    0 0 40px color-mix(in srgb, var(--gleam) 55%, transparent);
+}
+
+/* 框頂的牌匾標籤，像掛在牆上的銘謝牌。 */
+.gratitude-plaque {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 7px 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--accent-strong);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+/* 四角的 L 形刻痕，強化「特殊範圍」的邊界感。 */
+.gf-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--accent);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.gf-corner--tl { top: 16px; left: 16px; border-right: 0; border-bottom: 0; border-top-left-radius: 4px; }
+.gf-corner--tr { top: 16px; right: 16px; border-left: 0; border-bottom: 0; border-top-right-radius: 4px; }
+.gf-corner--bl { bottom: 16px; left: 16px; border-right: 0; border-top: 0; border-bottom-left-radius: 4px; }
+.gf-corner--br { bottom: 16px; right: 16px; border-left: 0; border-top: 0; border-bottom-right-radius: 4px; }
+
+/* 游標光暈：游標進入框內時，跟著游標的柔光（取材自範例的 cursor-glow）。
+   以一層 inset 裁切容器把光暈框在圓角矩形內，避免溢出邊界與牌匾。 */
+.gratitude-glow-clip {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.gratitude-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 30%, transparent) 0%, transparent 60%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  mix-blend-mode: multiply;
+}
+body.dark .gratitude-glow {
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 45%, transparent) 0%, transparent 60%);
+  mix-blend-mode: screen;
+}
+
+/* 名單本體：每一列是一位恩人，hover 觸發各自的字效。 */
+.gratitude-wall {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.gname {
+  position: relative;
+  padding: 16px 6px 18px;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  transition: padding-left 0.4s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.gname:last-child { border-bottom: 0; }
+.gname:hover,
+.gname:focus-within { padding-left: 26px; }
+
+.gname-name {
+  position: relative;
+  display: inline-block;
+  font-family: "Noto Serif TC", "Noto Sans TC", serif;
+  font-weight: 700;
+  font-size: clamp(30px, 5.5vw, 64px);
+  line-height: 1.1;
+  color: var(--text);
+}
+
+/* 流動名單：常駐顯示，預設暫停；游標移到該列才開始流動。 */
+.gname-roster {
+  margin-top: 8px;
+  overflow: hidden;
+  /* 兩側淡出遮罩，呼應範例 ticker 的流動感。 */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+/* 兩條相同軌道並排，整體左移 50% 形成無縫跑馬燈（取材自範例的 ticker）。 */
+.gname-marquee {
+  display: flex;
+  width: max-content;
+  animation: gname-scroll 18s linear infinite;
+  animation-play-state: paused;
+}
+.gname:hover .gname-marquee,
+.gname:focus-within .gname-marquee { animation-play-state: running; }
+@keyframes gname-scroll { to { transform: translateX(-50%); } }
+.gname-track {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+/* 無外框的純文字名單，以中點分隔連續流動（取材自範例的 ticker 文字流）。 */
+.gname-roster li {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+.gname-roster li::after {
+  content: "·";
+  margin: 0 0.85em;
+  color: currentColor;
+  opacity: 0.55;
+}
+/* 每列各自的等級色（--tier），對應名字字效的顏色。 */
+.gname--split { --tier: var(--accent-strong); }
+.gname--underline { --tier: var(--accent-strong); }
+.gname--glow { --tier: #d99a3e; }
+.gname--moon { --tier: #6f9ad0; }
+.gname--lux { --tier: #c9a227; }
+body.dark .gname--glow { --tier: #f0b25e; }
+body.dark .gname--moon { --tier: #aebfd8; }
+body.dark .gname--lux { --tier: #ffd86b; }
+
+/* 游標移到某列時，整條名單染上該等級色並帶同色微光。 */
+.gname:hover .gname-roster li,
+.gname:focus-within .gname-roster li {
+  color: var(--tier, var(--text));
+  text-shadow: 0 0 10px color-mix(in srgb, var(--tier, transparent) 40%, transparent);
+}
+
+/* 拆字（家人）：hover 時左右兩半往外分開並各自上色。 */
+.gname--split .gname-name { display: inline-flex; gap: 0.04em; }
+.gname--split .gname-name > span {
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.7, 0, 0.2, 1), color 0.4s ease;
+}
+.gname--split:hover .gname-name > span:first-child,
+.gname--split:focus-within .gname-name > span:first-child { transform: translateX(-14px) rotate(-6deg); color: var(--accent); }
+.gname--split:hover .gname-name > span:last-child,
+.gname--split:focus-within .gname-name > span:last-child { transform: translateX(14px) rotate(6deg); color: var(--gold); }
+
+/* 底線生長（摯友） */
+.gname--underline .gname-name::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+  transition: width 0.5s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.gname--underline:hover .gname-name,
+.gname--underline:focus-within .gname-name { color: var(--accent-strong); }
+.gname--underline:hover .gname-name::after,
+.gname--underline:focus-within .gname-name::after { width: 100%; }
+
+/* 微光（$100 · 🕯️）：燭火般的暖光，hover 時忽明忽暗地搖曳。 */
+.gname--glow .gname-name {
+  color: #c98a36;
+  text-shadow: 0 0 6px rgba(230, 161, 78, 0.25);
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+body.dark .gname--glow .gname-name { color: #f0b25e; }
+.gname--glow:hover .gname-name,
+.gname--glow:focus-within .gname-name {
+  color: #f2b65c;
+  animation: gname-flicker 1.6s ease-in-out infinite;
+}
+@keyframes gname-flicker {
+  0%, 100% { text-shadow: 0 0 8px rgba(240, 178, 94, 0.45), 0 0 18px rgba(240, 178, 94, 0.22); opacity: 1; }
+  45% { text-shadow: 0 0 4px rgba(240, 178, 94, 0.3); opacity: 0.85; }
+  70% { text-shadow: 0 0 12px rgba(240, 178, 94, 0.6), 0 0 26px rgba(240, 178, 94, 0.3); opacity: 0.97; }
+}
+
+/* 月光（$1000 · ✨）：清冷銀藍，hover 時一道光暈在字面上流過。 */
+.gname--moon .gname-name {
+  color: #8fa6c4;
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+body.dark .gname--moon .gname-name { color: #aebfd8; }
+.gname--moon:hover .gname-name,
+.gname--moon:focus-within .gname-name {
+  color: transparent;
+  background: linear-gradient(100deg, #c3d2e8 0%, #ffffff 45%, #9fb4d6 55%, #c3d2e8 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 18px rgba(180, 205, 240, 0.5);
+  animation: gname-moonsweep 2.4s linear infinite;
+}
+@keyframes gname-moonsweep { 0% { background-position: 200% 0; } 100% { background-position: -40% 0; } }
+
+/* 包養（$10000 · 🌌）：頂級金光，常駐流動的金色漸層，hover 時加碼閃爍與星芒。 */
+.gname--lux .gname-name {
+  color: transparent;
+  background: linear-gradient(100deg, #b8860b, #ffd86b, #fff4c2, #ffd86b, #b8860b);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.gname--lux:hover .gname-name,
+.gname--lux:focus-within .gname-name {
+  animation: gname-lux 2.2s linear infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 200, 80, 0.55));
+}
+@keyframes gname-lux { 0% { background-position: 0 0; } 100% { background-position: 220% 0; } }
+.gname--lux .gname-name::after {
+  content: "✦";
+  position: absolute;
+  top: -0.1em;
+  right: -0.75em;
+  font-size: 0.45em;
+  color: #ffe9a8;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.gname--lux:hover .gname-name::after,
+.gname--lux:focus-within .gname-name::after {
+  opacity: 1;
+  animation: gname-twinkle 1.2s ease-in-out infinite;
+}
+@keyframes gname-twinkle {
+  0%, 100% { transform: scale(1) rotate(0); opacity: 0.4; }
+  50% { transform: scale(1.6) rotate(25deg); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gname,
+  .gname-roster li,
+  .gname--split .gname-name > span { transition: none; }
+  .gname--glow:hover .gname-name,
+  .gname--moon:hover .gname-name,
+  .gname--lux:hover .gname-name,
+  .gname--lux .gname-name::after,
+  .gname-marquee { animation: none; }
 }
 
 /* 關於我頁地圖區塊：嵌入輔仁大學位置，採用 16:9 響應式比例。 */

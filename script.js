@@ -675,6 +675,67 @@ if (typeof lottie !== "undefined") {
   });
 })();
 
+// about 頁「恩人牆」：每個名字下方常駐一條流動名單，游標移上去才開始流動。
+// 把每份名單包成跑馬燈：原軌道 + 一條複製軌道並排，CSS 左移 50% 即可無縫循環。
+(function () {
+  const wall = document.querySelector(".gratitude-wall");
+  if (!wall) return;
+
+  wall.querySelectorAll(".gname-roster").forEach((roster) => {
+    const track = roster.querySelector("ul");
+    if (!track) return;
+    track.classList.add("gname-track");
+    const marquee = document.createElement("div");
+    marquee.className = "gname-marquee";
+    roster.insertBefore(marquee, track);
+    marquee.appendChild(track);
+    const clone = track.cloneNode(true);
+    clone.setAttribute("aria-hidden", "true");
+    marquee.appendChild(clone);
+  });
+})();
+
+// about 頁「恩人牆」框：游標進入後顯示跟隨游標的柔光光暈（帶緩動，移出即淡出）。
+(function () {
+  const frame = document.querySelector(".gratitude-frame");
+  const glow = frame && frame.querySelector(".gratitude-glow");
+  if (!glow) return;
+
+  let tx = 0, ty = 0, x = 0, y = 0, raf = null, active = false;
+
+  function render() {
+    x += (tx - x) * 0.15;
+    y += (ty - y) * 0.15;
+    glow.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+    if (active || Math.abs(tx - x) > 0.5 || Math.abs(ty - y) > 0.5) {
+      raf = requestAnimationFrame(render);
+    } else {
+      raf = null;
+    }
+  }
+
+  function setTarget(e) {
+    const r = frame.getBoundingClientRect();
+    tx = e.clientX - r.left;
+    ty = e.clientY - r.top;
+    if (!raf) render();
+  }
+
+  frame.addEventListener("mouseenter", (e) => {
+    const r = frame.getBoundingClientRect();
+    x = tx = e.clientX - r.left;
+    y = ty = e.clientY - r.top; // 進入瞬間直接跳到游標處，避免從角落飄入
+    active = true;
+    glow.style.opacity = "1";
+    if (!raf) render();
+  });
+  frame.addEventListener("mousemove", setTarget);
+  frame.addEventListener("mouseleave", () => {
+    active = false;
+    glow.style.opacity = "0";
+  });
+})();
+
 // about 頁背景音樂：進站後自動循環播放；被瀏覽器擋下時改在第一次互動時播放。
 // 左下角按鈕可隨時開關，狀態會記在 localStorage。
 (function () {
