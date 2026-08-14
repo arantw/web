@@ -26,8 +26,10 @@
   animation: startOverlayExit 0.5s ease 2.15s forwards;
 }
 
-/* 站內切換到達新頁時，不顯示首次進入底幕，只播放開窗簾效果。 */
-.page-arrival-transition .start-animation:not(.is-page-transition) {
+/* 站內切換到達新頁時，不顯示首次進入底幕，只播放開窗簾效果。
+   排除 .is-spa-transition：about ↔ sponsor 的無載入切換有自己的窗簾時序，
+   若被這裡的到達規則套到，會讓窗簾提早淡出、來不及蓋住抽換內容而出現破圖。 */
+.page-arrival-transition .start-animation:not(.is-page-transition):not(.is-spa-transition) {
   background: transparent;
   pointer-events: none;
   animation: startOverlayExit 0.35s ease 0.95s forwards;
@@ -35,12 +37,12 @@
   visibility: visible;
 }
 
-.page-arrival-transition .start-animation:not(.is-page-transition) .container::before {
+.page-arrival-transition .start-animation:not(.is-page-transition):not(.is-spa-transition) .container::before {
   display: none;
 }
 
-.page-arrival-transition .start-animation:not(.is-page-transition) .curtain__left::before,
-.page-arrival-transition .start-animation:not(.is-page-transition) .curtain__right::before {
+.page-arrival-transition .start-animation:not(.is-page-transition):not(.is-spa-transition) .curtain__left::before,
+.page-arrival-transition .start-animation:not(.is-page-transition):not(.is-spa-transition) .curtain__right::before {
   animation: open 0.7s ease-in-out 0.15s forwards;
 }
 
