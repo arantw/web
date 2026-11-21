@@ -17,7 +17,7 @@
         document.documentElement.classList.add("page-arrival-transition");
       }
     </script>
-    <title>作品集</title>
+    <title>Portfolio</title>
     <link rel="icon" href="img/logo.png" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="startAnimation.css" />
@@ -42,20 +42,20 @@
         </a>
       </div>
       <nav class="nav" aria-label="主要導覽">
-        <a href="index.html#home">首頁</a>
+        <a href="index.html#home">Home</a>
         <div class="nav-dropdown">
-          <a class="nav-dropdown-trigger active" href="works.html">選單</a>
+          <a class="nav-dropdown-trigger active" href="works.html">Menu</a>
           <div class="nav-menu" aria-label="作品選單">
-            <a class="active" href="works.html">作品集</a>
+            <a class="active" href="works.html">Portfolio</a>
             <div class="nav-subdropdown">
-              <a class="nav-submenu-trigger" href="about.html">關於我</a>
+              <a class="nav-submenu-trigger" href="about.html">About Me</a>
               <div class="nav-submenu" aria-label="關於我選項">
-                <a href="sponsor.html">贊助</a>
+                <a href="sponsor.html">Sponsor</a>
               </div>
             </div>
           </div>
         </div>
-        <a href="index.html#contact">聯絡</a>
+        <a href="index.html#contact">Contact</a>
       </nav>
       <button class="theme-toggle" type="button" aria-label="切換深色模式">
         <span class="theme-icon"><img src="assets/moon.svg" alt="" /></span>
@@ -63,11 +63,11 @@
     </header>
 
     <nav class="year-timeline" aria-label="作品年份時間軸">
-      <a href="#cas1">演算法</a>
-      <a href="#cas2">AE</a>
-      <a href="#cas3">PR</a>
-      <a href="#cas4">ART</a>
-      <a href="#cas5">ARDUINO</a>
+      <a href="#cas1">ARDUINO</a>
+      <a href="#cas2">Algorithm</a>
+      <a href="#cas3">AE</a>
+      <a href="#cas4">PR</a>
+      <a href="#cas5">ART</a>
     </nav>
 
     <main class="portfolio-main">
@@ -84,6 +84,24 @@
       </section>
 
       <section id="cas1" class="section year-section" data-year="cas1">
+        <div class="year-heading">
+          <p class="section-label">作品集</p>
+          <h2>ARDUINO</h2>
+        </div>
+        <div class="portfolio-row">
+          <button class="carousel-button" type="button" data-carousel="prev" aria-label="查看上一批作品">‹</button>
+          <div class="portfolio-track" tabindex="0">
+            <article class="portfolio-card"><span>01</span><h3>紅外線控制LED以及伺服馬達<iframe width="450" height="280" src="https://www.tinkercad.com/embed/ifBpcTSmQV6?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3><p>學校作業hhh</p></article>
+            <article class="portfolio-card"><span>02</span><h3>超音波+蜂鳴器<iframe width="450" height="280" src="https://www.tinkercad.com/embed/fjzB4JrxB0u?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
+            <article class="portfolio-card"><span>03</span><h3>光敏電阻＋類比Led燈<iframe width="450" height="280" src="https://www.tinkercad.com/embed/aI4fFzu8EBW?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
+            <article class="portfolio-card"><span>04</span><h3>可變電阻＋類比Led燈<iframe width="450" height="280" src="https://www.tinkercad.com/embed/e2oOAXpiG2Q?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
+            <article class="portfolio-card"><span>05</span><h3>2 Red-Yellow-Green + 1個7段顯示器<iframe width="450" height="280" src="https://www.tinkercad.com/embed/4TilPqdylRF?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
+          </div>
+          <button class="carousel-button" type="button" data-carousel="next" aria-label="查看下一批作品">›</button>
+        </div>
+      </section>
+
+      <section id="cas2" class="section year-section" data-year="cas2">
         <div class="year-heading">
           <p class="section-label">作品集</p>
           <h2>演算法</h2>
@@ -141,7 +159,7 @@
         </div>
       </section>
 
-      <section id="cas2" class="section year-section" data-year="cas2">
+      <section id="cas3" class="section year-section" data-year="cas3">
         <div class="year-heading">
           <p class="section-label">作品集</p>
           <h2>After Effects</h2>
@@ -158,7 +176,7 @@
         </div>
       </section>
 
-      <section id="cas3" class="section year-section" data-year="cas3">
+      <section id="cas4" class="section year-section" data-year="cas4">
         <div class="year-heading">
           <p class="section-label">作品集</p>
           <h2>Premiere</h2>
@@ -175,7 +193,7 @@
         </div>
       </section>
 
-      <section id="cas4" class="section year-section" data-year="cas4">
+      <section id="cas5" class="section year-section" data-year="cas5">
         <div class="year-heading">
           <p class="section-label">作品集</p>
           <h2>ART</h2>
@@ -191,23 +209,7 @@
         </div>
       </section>
 
-      <section id="cas5" class="section year-section" data-year="cas5">
-        <div class="year-heading">
-          <p class="section-label">作品集</p>
-          <h2>ARDUINO</h2>
-        </div>
-        <div class="portfolio-row">
-          <button class="carousel-button" type="button" data-carousel="prev" aria-label="查看上一批作品">‹</button>
-          <div class="portfolio-track" tabindex="0">
-            <article class="portfolio-card"><span>01</span><h3>紅外線控制LED以及伺服馬達<iframe width="450" height="280" src="https://www.tinkercad.com/embed/ifBpcTSmQV6?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3><p>學校作業hhh</p></article>
-            <article class="portfolio-card"><span>02</span><h3>超音波+蜂鳴器<iframe width="450" height="280" src="https://www.tinkercad.com/embed/fjzB4JrxB0u?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
-            <article class="portfolio-card"><span>03</span><h3>光敏電阻＋類比Led燈<iframe width="450" height="280" src="https://www.tinkercad.com/embed/aI4fFzu8EBW?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
-            <article class="portfolio-card"><span>04</span><h3>可變電阻＋類比Led燈<iframe width="450" height="280" src="https://www.tinkercad.com/embed/e2oOAXpiG2Q?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
-            <article class="portfolio-card"><span>05</span><h3>2 Red-Yellow-Green + 1個7段顯示器<iframe width="450" height="280" src="https://www.tinkercad.com/embed/4TilPqdylRF?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></h3></article>
-          </div>
-          <button class="carousel-button" type="button" data-carousel="next" aria-label="查看下一批作品">›</button>
-        </div>
-      </section>
+      
     </main>
 
     <button class="top-button" type="button" aria-label="回到頁面頂端">↑</button>
